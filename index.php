@@ -176,9 +176,14 @@ try {
       line-height: 1.25;
       letter-spacing: -0.02em;
     }
+    .fluid-word-verb {
+      font-size: clamp(1.12rem, 3.8vw + 0.05rem, 1.55rem);
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+    }
     .fluid-reading {
-      font-size: clamp(1rem, 3.4vw + 0.1rem, 1.35rem);
-      line-height: 1.45;
+      font-size: clamp(0.95rem, 3.2vw + 0.05rem, 1.25rem);
+      line-height: 1.4;
     }
     .fluid-meaning {
       font-size: clamp(1.3rem, 4.4vw, 1.85rem);
@@ -318,13 +323,13 @@ try {
     <!-- Flashcard Display Area (Touch-friendly 3D Card) -->
     <div class="perspective-1000 relative">
       <div id="card-container" onclick="flipCard(event)" 
-           class="flip-card-inner transform-style-3d relative w-full min-h-[400px] sm:min-h-[440px] md:min-h-[470px] cursor-pointer select-none touch-manipulate">
+           class="flip-card-inner transform-style-3d relative w-full min-h-[420px] sm:min-h-[450px] md:min-h-[480px] cursor-pointer select-none touch-manipulate">
 
         <!-- FRONT SIDE -->
-        <div id="card-front" class="backface-hidden absolute inset-0 w-full h-full bg-white border-2 border-blue-200 rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-md flex flex-col justify-between">
+        <div id="card-front" class="backface-hidden absolute inset-0 w-full h-full bg-white border-2 border-blue-200 rounded-2xl sm:rounded-3xl p-3 sm:p-6 shadow-md flex flex-col justify-between overflow-y-auto ios-scroll">
           <div>
             <!-- Top Card Header -->
-            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
               <div class="flex items-center gap-1.5 sm:gap-2">
                 <span id="front-cat-badge" class="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-blue-100 text-blue-700">
                   คำนาม Noun
@@ -337,33 +342,33 @@ try {
             </div>
 
             <!-- Center Target Word & Verb Forms -->
-            <div class="my-3 sm:my-6 text-center">
-              <div class="fluid-icon mb-1.5" id="front-icon">🔑</div>
-              <div class="flex items-center justify-center gap-2.5 flex-wrap">
+            <div class="my-2 sm:my-3.5 text-center">
+              <div class="fluid-icon mb-1" id="front-icon">🔑</div>
+              <div class="flex items-center justify-center gap-2 flex-wrap">
                 <h2 class="fluid-word font-extrabold tracking-tight text-slate-900" id="front-word">
                   access
                 </h2>
-                <button onclick="speakWord(event)" id="speaker-btn" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition border-2 border-blue-200 touch-target active:scale-90 flex-shrink-0 shadow-sm" title="ฟังเสียงอ่าน (กริยาจะอ่านต่อเนื่อง 3 ช่อง V.1, V.2, V.3)">
-                  <span class="text-xl sm:text-2xl">🔊</span>
+                <button onclick="speakWord(event)" id="speaker-btn" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition border border-blue-200 touch-target active:scale-90 flex-shrink-0 shadow-sm" title="ฟังเสียงอ่าน (กริยาจะอ่านต่อเนื่อง 3 ช่อง V.1, V.2, V.3)">
+                  <span class="text-base sm:text-lg">🔊</span>
                 </button>
               </div>
 
               <!-- Dedicated 3 Verb Forms Container (Shows only for verbs) -->
-              <div id="front-verb-box" class="mt-3 inline-flex items-center justify-center gap-2 sm:gap-3 flex-wrap bg-blue-50/95 border-2 border-blue-200 rounded-2xl px-3.5 py-2 shadow-sm text-sm sm:text-base hidden transition-all">
-                <span id="badge-v1" class="inline-flex items-center gap-1.5 font-bold text-blue-900 cursor-pointer hover:bg-blue-100/90 px-2.5 py-1 rounded-xl transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v1')" title="คลิกเพื่อฟังเสียง V.1">
-                  <span class="text-[11px] bg-blue-200 text-blue-900 font-bold px-1.5 py-0.5 rounded font-mono">V.1</span> <b id="front-v1" class="text-base sm:text-lg text-blue-950 font-extrabold">accept</b>
+              <div id="front-verb-box" class="mt-2 inline-flex items-center justify-center gap-1 sm:gap-1.5 flex-wrap bg-blue-50/90 border border-blue-200 rounded-xl px-2.5 py-1 shadow-sm text-xs sm:text-sm hidden transition-all max-w-full">
+                <span id="badge-v1" class="inline-flex items-center gap-1 font-bold text-blue-900 cursor-pointer hover:bg-blue-100 px-2 py-0.5 rounded-lg transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v1')" title="คลิกเพื่อฟังเสียง V.1">
+                  <span class="text-[10px] bg-blue-200 text-blue-800 font-bold px-1.5 py-0.2 rounded font-mono">V.1</span> <b id="front-v1" class="text-xs sm:text-sm text-blue-950 font-bold">accept</b>
                 </span>
-                <span class="text-blue-300 font-bold text-base">➔</span>
-                <span id="badge-v2" class="inline-flex items-center gap-1.5 font-bold text-blue-900 cursor-pointer hover:bg-blue-100/90 px-2.5 py-1 rounded-xl transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v2')" title="คลิกเพื่อฟังเสียง V.2">
-                  <span class="text-[11px] bg-blue-200 text-blue-900 font-bold px-1.5 py-0.5 rounded font-mono">V.2</span> <b id="front-v2" class="text-base sm:text-lg text-blue-950 font-extrabold">accepted</b>
+                <span class="text-blue-300 font-bold text-xs">➔</span>
+                <span id="badge-v2" class="inline-flex items-center gap-1 font-bold text-blue-900 cursor-pointer hover:bg-blue-100 px-2 py-0.5 rounded-lg transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v2')" title="คลิกเพื่อฟังเสียง V.2">
+                  <span class="text-[10px] bg-blue-200 text-blue-800 font-bold px-1.5 py-0.2 rounded font-mono">V.2</span> <b id="front-v2" class="text-xs sm:text-sm text-blue-950 font-bold">accepted</b>
                 </span>
-                <span class="text-blue-300 font-bold text-base">➔</span>
-                <span id="badge-v3" class="inline-flex items-center gap-1.5 font-bold text-blue-900 cursor-pointer hover:bg-blue-100/90 px-2.5 py-1 rounded-xl transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v3')" title="คลิกเพื่อฟังเสียง V.3">
-                  <span class="text-[11px] bg-blue-200 text-blue-900 font-bold px-1.5 py-0.5 rounded font-mono">V.3</span> <b id="front-v3" class="text-base sm:text-lg text-blue-950 font-extrabold">accepted</b>
+                <span class="text-blue-300 font-bold text-xs">➔</span>
+                <span id="badge-v3" class="inline-flex items-center gap-1 font-bold text-blue-900 cursor-pointer hover:bg-blue-100 px-2 py-0.5 rounded-lg transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v3')" title="คลิกเพื่อฟังเสียง V.3">
+                  <span class="text-[10px] bg-blue-200 text-blue-800 font-bold px-1.5 py-0.2 rounded font-mono">V.3</span> <b id="front-v3" class="text-xs sm:text-sm text-blue-950 font-bold">accepted</b>
                 </span>
               </div>
 
-              <p class="fluid-reading text-slate-700 font-semibold mt-2 flex items-center justify-center gap-1.5 flex-wrap" id="front-reading">
+              <p class="fluid-reading text-slate-700 font-semibold mt-1.5 flex items-center justify-center gap-1.5 flex-wrap" id="front-reading">
                 คำอ่าน: 'แอ็คเซิซ
               </p>
             </div>
@@ -410,28 +415,28 @@ try {
 
             <!-- Word & Thai Meaning -->
             <div class="text-center my-2 sm:my-3">
-              <div class="flex items-center justify-center gap-2.5 flex-wrap">
+              <div class="flex items-center justify-center gap-2 flex-wrap">
                 <span id="back-word" class="fluid-word font-bold text-slate-900">access</span>
-                <button onclick="speakWord(event)" id="speaker-btn-back" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-emerald-50 text-emerald-600 hover:bg-emerald-100 flex items-center justify-center transition border-2 border-emerald-200 touch-target active:scale-90 flex-shrink-0 shadow-sm" title="ฟังเสียงอ่าน">
-                  <span class="text-lg sm:text-xl">🔊</span>
+                <button onclick="speakWord(event)" id="speaker-btn-back" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-emerald-50 text-emerald-600 hover:bg-emerald-100 flex items-center justify-center transition border border-emerald-200 touch-target active:scale-90 flex-shrink-0 shadow-sm" title="ฟังเสียงอ่าน">
+                  <span class="text-base sm:text-lg">🔊</span>
                 </button>
               </div>
 
               <!-- Dedicated 3 Verb Forms Diagram on Back (Shows only for verbs) -->
-              <div id="back-verb-box" class="mt-2.5 inline-flex items-center justify-center gap-2 sm:gap-3 flex-wrap bg-emerald-50/95 border-2 border-emerald-200 rounded-2xl px-4 py-2 shadow-sm text-sm sm:text-base hidden transition-all">
-                <div id="badge-back-v1" class="text-center px-2 py-1 rounded-xl hover:bg-emerald-100/70 cursor-pointer transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v1')" title="ฟังเสียง V.1">
-                  <span class="text-[11px] font-bold text-emerald-700 uppercase block">V.1 รูปเดิม</span>
-                  <span class="font-extrabold text-emerald-950 text-base sm:text-lg" id="back-v1">accept</span>
+              <div id="back-verb-box" class="mt-2 inline-flex items-center justify-center gap-1 sm:gap-1.5 flex-wrap bg-emerald-50/90 border border-emerald-200 rounded-xl px-2.5 py-1 shadow-sm text-xs sm:text-sm hidden transition-all max-w-full">
+                <div id="badge-back-v1" class="text-center px-1.5 py-0.5 rounded-lg hover:bg-emerald-100/70 cursor-pointer transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v1')" title="ฟังเสียง V.1">
+                  <span class="text-[10px] font-bold text-emerald-700 uppercase block">V.1 รูปเดิม</span>
+                  <span class="font-bold text-emerald-950 text-xs sm:text-sm" id="back-v1">accept</span>
                 </div>
-                <span class="text-emerald-400 font-bold text-base">➔</span>
-                <div id="badge-back-v2" class="text-center px-2 py-1 rounded-xl hover:bg-emerald-100/70 cursor-pointer transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v2')" title="ฟังเสียง V.2">
-                  <span class="text-[11px] font-bold text-emerald-700 uppercase block">V.2 อดีต (Past)</span>
-                  <span class="font-extrabold text-emerald-950 text-base sm:text-lg" id="back-v2">accepted</span>
+                <span class="text-emerald-400 font-bold text-xs">➔</span>
+                <div id="badge-back-v2" class="text-center px-1.5 py-0.5 rounded-lg hover:bg-emerald-100/70 cursor-pointer transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v2')" title="ฟังเสียง V.2">
+                  <span class="text-[10px] font-bold text-emerald-700 uppercase block">V.2 อดีต</span>
+                  <span class="font-bold text-emerald-950 text-xs sm:text-sm" id="back-v2">accepted</span>
                 </div>
-                <span class="text-emerald-400 font-bold text-base">➔</span>
-                <div id="badge-back-v3" class="text-center px-2 py-1 rounded-xl hover:bg-emerald-100/70 cursor-pointer transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v3')" title="ฟังเสียง V.3">
-                  <span class="text-[11px] font-bold text-emerald-700 uppercase block">V.3 Participle</span>
-                  <span class="font-extrabold text-emerald-950 text-base sm:text-lg" id="back-v3">accepted</span>
+                <span class="text-emerald-400 font-bold text-xs">➔</span>
+                <div id="badge-back-v3" class="text-center px-1.5 py-0.5 rounded-lg hover:bg-emerald-100/70 cursor-pointer transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v3')" title="ฟังเสียง V.3">
+                  <span class="text-[10px] font-bold text-emerald-700 uppercase block">V.3 Participle</span>
+                  <span class="font-bold text-emerald-950 text-xs sm:text-sm" id="back-v3">accepted</span>
                 </div>
               </div>
 
@@ -978,7 +983,8 @@ try {
       const backVerbBox = document.getElementById("back-verb-box");
 
       if (isVerbWithThreeForms) {
-        frontWordEl.innerHTML = `<span class="text-blue-700">${v1}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${v2}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${v3}</span>`;
+        frontWordEl.className = "fluid-word-verb font-bold tracking-tight text-slate-900 inline-block";
+        frontWordEl.innerHTML = `<span class="text-blue-700 font-extrabold">${v1}</span> <span class="text-slate-300 font-normal mx-0.5">–</span> <span class="text-slate-800 font-bold">${v2}</span> <span class="text-slate-300 font-normal mx-0.5">–</span> <span class="text-slate-800 font-bold">${v3}</span>`;
         frontVerbBox.classList.remove("hidden");
         document.getElementById("front-v1").innerText = v1;
         document.getElementById("front-v2").innerText = v2;
@@ -989,6 +995,7 @@ try {
         document.getElementById("back-v2").innerText = v2;
         document.getElementById("back-v3").innerText = v3;
       } else {
+        frontWordEl.className = "fluid-word font-extrabold tracking-tight text-slate-900 inline-block";
         frontWordEl.innerText = c.word;
         frontVerbBox.classList.add("hidden");
         backVerbBox.classList.add("hidden");
@@ -1030,8 +1037,10 @@ try {
       
       const backWordEl = document.getElementById("back-word");
       if (isVerbWithThreeForms) {
-        backWordEl.innerHTML = `<span class="text-emerald-700">${v1}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${v2}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${v3}</span>`;
+        backWordEl.className = "fluid-word-verb font-bold tracking-tight text-slate-900 inline-block";
+        backWordEl.innerHTML = `<span class="text-emerald-700 font-extrabold">${v1}</span> <span class="text-slate-300 font-normal mx-0.5">–</span> <span class="text-slate-800 font-bold">${v2}</span> <span class="text-slate-300 font-normal mx-0.5">–</span> <span class="text-slate-800 font-bold">${v3}</span>`;
       } else {
+        backWordEl.className = "fluid-word font-bold text-slate-900 inline-block";
         backWordEl.innerText = c.word;
       }
 
