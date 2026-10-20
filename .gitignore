@@ -1,0 +1,22 @@
+# Local database credentials (DO NOT push to git to protect production server)
+/config/config.php
+.env
+.env.local
+.env.*.local
+
+# macOS system files
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Logs and temporary files
+*.log
+logs/
+tmp/
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace

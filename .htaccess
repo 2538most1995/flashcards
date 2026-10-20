@@ -1,0 +1,12 @@
+DirectoryIndex index.php index.html
+
+AddDefaultCharset UTF-8
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^index\.html$ index.php [L,QSA]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
