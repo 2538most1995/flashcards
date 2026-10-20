@@ -1,4 +1,4 @@
--- SQL Schema for Flashcards 500 ครูผู้ช่วย 2569
+-- SQL Schema for Flashcards 500 ครูผู้ช่วย 2569 (รวมกริยา 3 ช่อง)
 CREATE DATABASE IF NOT EXISTS `flashcards_db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `flashcards_db`;
 
@@ -8,6 +8,9 @@ CREATE TABLE IF NOT EXISTS `flashcards` (
     `num` INT NOT NULL UNIQUE,
     `word` VARCHAR(150) NOT NULL,
     `pos` VARCHAR(50) DEFAULT '',
+    `v1` VARCHAR(100) DEFAULT NULL,
+    `v2` VARCHAR(100) DEFAULT NULL,
+    `v3` VARCHAR(100) DEFAULT NULL,
     `meaning` TEXT NOT NULL,
     `category` VARCHAR(100) NOT NULL,
     `reading` VARCHAR(150) DEFAULT '',

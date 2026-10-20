@@ -100,6 +100,9 @@ function initSchemaAndData(PDO $pdo) {
         `num` INT NOT NULL UNIQUE,
         `word` VARCHAR(150) NOT NULL,
         `pos` VARCHAR(50) DEFAULT '',
+        `v1` VARCHAR(100) DEFAULT NULL,
+        `v2` VARCHAR(100) DEFAULT NULL,
+        `v3` VARCHAR(100) DEFAULT NULL,
         `meaning` TEXT NOT NULL,
         `category` VARCHAR(100) NOT NULL,
         `reading` VARCHAR(150) DEFAULT '',
@@ -116,6 +119,16 @@ function initSchemaAndData(PDO $pdo) {
         INDEX `idx_word` (`word`),
         INDEX `idx_num` (`num`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    // Ensure v1, v2, v3 columns exist if table was created previously without them
+    try {
+        $colCheck = $pdo->query("SHOW COLUMNS FROM `flashcards` LIKE 'v1'")->fetch();
+        if (!$colCheck) {
+            $pdo->exec("ALTER TABLE `flashcards` ADD COLUMN `v1` VARCHAR(100) DEFAULT NULL AFTER `pos`");
+            $pdo->exec("ALTER TABLE `flashcards` ADD COLUMN `v2` VARCHAR(100) DEFAULT NULL AFTER `v1`");
+            $pdo->exec("ALTER TABLE `flashcards` ADD COLUMN `v3` VARCHAR(100) DEFAULT NULL AFTER `v2`");
+        }
+    } catch (Exception $eCol) {}
 
     // 2. Users table
     $pdo->exec("CREATE TABLE IF NOT EXISTS `users` (
@@ -154,9 +167,9 @@ function initSchemaAndData(PDO $pdo) {
             $cards = json_decode(file_get_contents($jsonPath), true);
             if (is_array($cards) && !empty($cards)) {
                 $insert = $pdo->prepare("INSERT IGNORE INTO flashcards 
-                    (num, word, pos, meaning, category, reading, example, example_th, cloze, icon, synonyms, antonyms, memory_hook)
+                    (num, word, pos, v1, v2, v3, meaning, category, reading, example, example_th, cloze, icon, synonyms, antonyms, memory_hook)
                     VALUES 
-                    (:num, :word, :pos, :meaning, :category, :reading, :example, :example_th, :cloze, :icon, :synonyms, :antonyms, :memory_hook)
+                    (:num, :word, :pos, :v1, :v2, :v3, :meaning, :category, :reading, :example, :example_th, :cloze, :icon, :synonyms, :antonyms, :memory_hook)
                 ");
 
                 $pdo->beginTransaction();
@@ -165,6 +178,9 @@ function initSchemaAndData(PDO $pdo) {
                         ':num' => $c['num'] ?? 0,
                         ':word' => $c['word'] ?? '',
                         ':pos' => $c['pos'] ?? '',
+                        ':v1' => $c['v1'] ?? null,
+                        ':v2' => $c['v2'] ?? null,
+                        ':v3' => $c['v3'] ?? null,
                         ':meaning' => $c['meaning'] ?? '',
                         ':category' => $c['category'] ?? '',
                         ':reading' => $c['reading'] ?? '',

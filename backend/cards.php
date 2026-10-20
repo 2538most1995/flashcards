@@ -33,6 +33,9 @@ if ($method === 'GET') {
                 f.num,
                 f.word,
                 f.pos,
+                f.v1,
+                f.v2,
+                f.v3,
                 f.meaning,
                 f.category,
                 f.reading,
@@ -74,6 +77,9 @@ if ($method === 'GET') {
     if (!empty($query)) {
         $sql .= " AND (
             f.word LIKE :q OR 
+            f.v1 LIKE :q OR 
+            f.v2 LIKE :q OR 
+            f.v3 LIKE :q OR 
             f.meaning LIKE :q OR 
             f.reading LIKE :q OR 
             f.example LIKE :q OR 
@@ -123,6 +129,9 @@ if ($method === 'POST') {
     $num = (int)($input['num'] ?? 0);
     $word = trim($input['word'] ?? '');
     $pos = trim($input['pos'] ?? '');
+    $v1 = trim($input['v1'] ?? '');
+    $v2 = trim($input['v2'] ?? '');
+    $v3 = trim($input['v3'] ?? '');
     $meaning = trim($input['meaning'] ?? '');
     $category = trim($input['category'] ?? 'คำนาม (Noun)');
     $reading = trim($input['reading'] ?? '');
@@ -157,22 +166,25 @@ if ($method === 'POST') {
 
     if ($cardId) {
         $stmt = $pdo->prepare("UPDATE flashcards SET 
-            word = :word, pos = :pos, meaning = :meaning, category = :category,
+            word = :word, pos = :pos, v1 = :v1, v2 = :v2, v3 = :v3, meaning = :meaning, category = :category,
             reading = :reading, example = :example, example_th = :example_th,
             cloze = :cloze, icon = :icon, synonyms = :synonyms, antonyms = :antonyms,
             memory_hook = :memory_hook
             WHERE num = :num");
     } else {
         $stmt = $pdo->prepare("INSERT INTO flashcards 
-            (num, word, pos, meaning, category, reading, example, example_th, cloze, icon, synonyms, antonyms, memory_hook)
+            (num, word, pos, v1, v2, v3, meaning, category, reading, example, example_th, cloze, icon, synonyms, antonyms, memory_hook)
             VALUES 
-            (:num, :word, :pos, :meaning, :category, :reading, :example, :example_th, :cloze, :icon, :synonyms, :antonyms, :memory_hook)");
+            (:num, :word, :pos, :v1, :v2, :v3, :meaning, :category, :reading, :example, :example_th, :cloze, :icon, :synonyms, :antonyms, :memory_hook)");
     }
 
     $stmt->execute([
         ':num' => $num,
         ':word' => $word,
         ':pos' => $pos,
+        ':v1' => !empty($v1) ? $v1 : null,
+        ':v2' => !empty($v2) ? $v2 : null,
+        ':v3' => !empty($v3) ? $v3 : null,
         ':meaning' => $meaning,
         ':category' => $category,
         ':reading' => $reading,
@@ -191,6 +203,9 @@ if ($method === 'POST') {
         'card' => [
             'num' => $num,
             'word' => $word,
+            'v1' => $v1,
+            'v2' => $v2,
+            'v3' => $v3,
             'meaning' => $meaning,
             'category' => $category
         ]

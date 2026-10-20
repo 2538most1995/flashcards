@@ -29,9 +29,9 @@ try {
 
     $userId = $initialUser ? (int)$initialUser['id'] : 1;
 
-    // Fetch initial cards
+    // Fetch initial cards with v1, v2, v3
     $stmtCards = $pdo->prepare("SELECT 
-            f.id, f.num, f.word, f.pos, f.meaning, f.category, f.reading,
+            f.id, f.num, f.word, f.pos, f.v1, f.v2, f.v3, f.meaning, f.category, f.reading,
             f.example, f.example_th, f.cloze, f.icon, f.synonyms, f.antonyms, f.memory_hook,
             COALESCE(cp.status, 'unseen') AS status,
             COALESCE(cp.review_count, 0) AS review_count
@@ -151,16 +151,15 @@ try {
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
-    /* Fluid typography rules using clamp() */
     .fluid-word {
-      font-size: clamp(1.75rem, 5.5vw + 0.2rem, 2.5rem);
-      line-height: 1.15;
+      font-size: clamp(1.4rem, 4.5vw + 0.2rem, 2.3rem);
+      line-height: 1.2;
     }
     .fluid-meaning {
       font-size: clamp(1.15rem, 3.8vw, 1.5rem);
     }
     .fluid-icon {
-      font-size: clamp(2.75rem, 8vw, 4.25rem);
+      font-size: clamp(2.5rem, 7vw, 4rem);
     }
     .ios-scroll {
       -webkit-overflow-scrolling: touch;
@@ -170,7 +169,7 @@ try {
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased transition-colors duration-200">
 
-  <!-- Main Container (Responsive for iPhone, iPad, and Desktop) -->
+  <!-- Main Container -->
   <div class="max-w-4xl mx-auto space-y-3 sm:space-y-4 px-1 sm:px-3">
 
     <!-- Header Banner -->
@@ -191,12 +190,12 @@ try {
               </span>
             </div>
             <p class="text-[11px] sm:text-xs text-slate-500 truncate hidden sm:block">
-              Active Recall • บันทึกคะแนนและคำศัพท์ลง MySQL (MAMP)
+              Active Recall • บันทึกคะแนนและคำศัพท์ลง MySQL (รวมกริยา 3 ช่อง V.1, V.2, V.3)
             </p>
           </div>
         </div>
 
-        <!-- User Selector (Compact on mobile) -->
+        <!-- User Selector -->
         <div class="flex items-center gap-1 bg-slate-100 border border-slate-200 rounded-xl px-2 py-1 text-xs flex-shrink-0">
           <span class="text-slate-500 hidden sm:inline">👤 ผู้เรียน:</span>
           <span class="text-slate-500 sm:hidden">👤</span>
@@ -211,7 +210,7 @@ try {
         </div>
       </div>
 
-      <!-- Action Toolbar (Optimized for thumb tap on iPhone & iPad) -->
+      <!-- Action Toolbar -->
       <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-0.5 scrollbar-none text-xs">
         <button onclick="openCardModal()" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-medium transition flex items-center gap-1 shadow-sm whitespace-nowrap active:scale-95 touch-manipulate" title="เพิ่มคำศัพท์ใหม่">
           <span>➕</span> <span class="hidden sm:inline">เพิ่มคำศัพท์</span><span class="sm:hidden">เพิ่ม</span>
@@ -240,10 +239,9 @@ try {
 
     <!-- Category Tabs & Search Bar -->
     <div class="bg-white border border-slate-200 rounded-2xl p-3 sm:p-4 shadow-sm space-y-2.5">
-      <!-- Search & Status filter -->
       <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center justify-between">
         <div class="relative flex-1">
-          <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="🔍 ค้นหาคำศัพท์, คำแปล, คำอ่าน หรือประโยค..." 
+          <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="🔍 ค้นหาคำศัพท์, กริยา 3 ช่อง, คำแปล, คำอ่าน หรือประโยค..." 
                  class="w-full pl-8 sm:pl-9 pr-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-300 bg-slate-50 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
           <span class="absolute left-2.5 sm:left-3 top-2.5 text-xs text-slate-400">🔍</span>
         </div>
@@ -261,7 +259,7 @@ try {
         </div>
       </div>
 
-      <!-- Categories Pills (Horizontal scrollable on iPhone/iPad) -->
+      <!-- Categories Pills -->
       <div class="flex items-center gap-1 sm:gap-1.5 overflow-x-auto pb-1 text-xs scrollbar-none" id="category-pills">
       </div>
     </div>
@@ -295,7 +293,7 @@ try {
     <!-- Flashcard Display Area (Touch-friendly 3D Card) -->
     <div class="perspective-1000 relative">
       <div id="card-container" onclick="flipCard(event)" 
-           class="flip-card-inner transform-style-3d relative w-full min-h-[390px] sm:min-h-[440px] md:min-h-[460px] cursor-pointer select-none touch-manipulate">
+           class="flip-card-inner transform-style-3d relative w-full min-h-[400px] sm:min-h-[440px] md:min-h-[470px] cursor-pointer select-none touch-manipulate">
 
         <!-- FRONT SIDE -->
         <div id="card-front" class="backface-hidden absolute inset-0 w-full h-full bg-white border-2 border-blue-200 rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-md flex flex-col justify-between">
@@ -313,17 +311,33 @@ try {
               </div>
             </div>
 
-            <!-- Center Target Word & Cloze Context -->
-            <div class="my-4 sm:my-7 text-center">
-              <div class="fluid-icon mb-2" id="front-icon">🔑</div>
-              <div class="flex items-center justify-center gap-2">
+            <!-- Center Target Word & Verb Forms -->
+            <div class="my-3 sm:my-6 text-center">
+              <div class="fluid-icon mb-1.5" id="front-icon">🔑</div>
+              <div class="flex items-center justify-center gap-2 flex-wrap">
                 <h2 class="fluid-word font-extrabold tracking-tight text-slate-900" id="front-word">
                   access
                 </h2>
-                <button onclick="speakWord(event)" id="speaker-btn" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition border border-blue-200 touch-target active:scale-90" title="ฟังเสียงอ่านเจ้าของภาษา">
+                <button onclick="speakWord(event)" id="speaker-btn" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition border border-blue-200 touch-target active:scale-90 flex-shrink-0" title="ฟังเสียงอ่าน (หากเป็นกริยาจะอ่านครบ 3 คำ)">
                   <span class="text-base sm:text-lg">🔊</span>
                 </button>
               </div>
+
+              <!-- Dedicated 3 Verb Forms Container (Shows only for verbs) -->
+              <div id="front-verb-box" class="mt-2.5 inline-flex items-center justify-center gap-1.5 sm:gap-2.5 flex-wrap bg-blue-50/90 border border-blue-200 rounded-xl px-3 py-1.5 shadow-sm text-xs sm:text-sm hidden">
+                <span class="inline-flex items-center gap-1 font-bold text-blue-900 cursor-pointer hover:bg-blue-100/80 px-2 py-0.5 rounded-lg transition" onclick="speakSingleWord(event, 'v1')" title="คลิกเพื่อฟังเสียง V.1">
+                  <span class="text-[10px] bg-blue-200/90 text-blue-800 font-bold px-1.5 py-0.5 rounded font-mono">V.1</span> <b id="front-v1">accept</b>
+                </span>
+                <span class="text-blue-300 font-bold">➔</span>
+                <span class="inline-flex items-center gap-1 font-bold text-blue-900 cursor-pointer hover:bg-blue-100/80 px-2 py-0.5 rounded-lg transition" onclick="speakSingleWord(event, 'v2')" title="คลิกเพื่อฟังเสียง V.2">
+                  <span class="text-[10px] bg-blue-200/90 text-blue-800 font-bold px-1.5 py-0.5 rounded font-mono">V.2</span> <b id="front-v2">accepted</b>
+                </span>
+                <span class="text-blue-300 font-bold">➔</span>
+                <span class="inline-flex items-center gap-1 font-bold text-blue-900 cursor-pointer hover:bg-blue-100/80 px-2 py-0.5 rounded-lg transition" onclick="speakSingleWord(event, 'v3')" title="คลิกเพื่อฟังเสียง V.3">
+                  <span class="text-[10px] bg-blue-200/90 text-blue-800 font-bold px-1.5 py-0.5 rounded font-mono">V.3</span> <b id="front-v3">accepted</b>
+                </span>
+              </div>
+
               <p class="text-xs sm:text-sm text-slate-500 mt-1" id="front-reading">
                 คำอ่าน: 'แอ็คเซิซ
               </p>
@@ -371,12 +385,31 @@ try {
 
             <!-- Word & Thai Meaning -->
             <div class="text-center my-2 sm:my-3">
-              <div class="flex items-center justify-center gap-2">
+              <div class="flex items-center justify-center gap-2 flex-wrap">
                 <span id="back-word" class="fluid-word font-bold text-slate-900">access</span>
-                <button onclick="speakWord(event)" id="speaker-btn-back" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-50 text-emerald-600 hover:bg-emerald-100 flex items-center justify-center transition border border-emerald-200 touch-target active:scale-90" title="ฟังเสียง">
+                <button onclick="speakWord(event)" id="speaker-btn-back" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-50 text-emerald-600 hover:bg-emerald-100 flex items-center justify-center transition border border-emerald-200 touch-target active:scale-90 flex-shrink-0" title="ฟังเสียงอ่าน">
                   <span class="text-sm sm:text-base">🔊</span>
                 </button>
               </div>
+
+              <!-- Dedicated 3 Verb Forms Diagram on Back (Shows only for verbs) -->
+              <div id="back-verb-box" class="mt-2 inline-flex items-center justify-center gap-2 sm:gap-3 flex-wrap bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-2 shadow-sm text-xs sm:text-sm hidden">
+                <div class="text-center px-1.5 py-0.5 rounded-lg hover:bg-emerald-100/60 cursor-pointer transition" onclick="speakSingleWord(event, 'v1')" title="ฟังเสียง V.1">
+                  <span class="text-[10px] font-bold text-emerald-600 uppercase block">V.1 รูปเดิม</span>
+                  <span class="font-extrabold text-emerald-950 text-sm sm:text-base" id="back-v1">accept</span>
+                </div>
+                <span class="text-emerald-400 font-bold">➔</span>
+                <div class="text-center px-1.5 py-0.5 rounded-lg hover:bg-emerald-100/60 cursor-pointer transition" onclick="speakSingleWord(event, 'v2')" title="ฟังเสียง V.2">
+                  <span class="text-[10px] font-bold text-emerald-600 uppercase block">V.2 อดีต (Past)</span>
+                  <span class="font-extrabold text-emerald-950 text-sm sm:text-base" id="back-v2">accepted</span>
+                </div>
+                <span class="text-emerald-400 font-bold">➔</span>
+                <div class="text-center px-1.5 py-0.5 rounded-lg hover:bg-emerald-100/60 cursor-pointer transition" onclick="speakSingleWord(event, 'v3')" title="ฟังเสียง V.3">
+                  <span class="text-[10px] font-bold text-emerald-600 uppercase block">V.3 Participle</span>
+                  <span class="font-extrabold text-emerald-950 text-sm sm:text-base" id="back-v3">accepted</span>
+                </div>
+              </div>
+
               <div id="back-reading" class="text-xs text-slate-500 mt-0.5">('แอ็คเซิซ)</div>
               <div class="mt-2 inline-block">
                 <span id="back-meaning" class="fluid-meaning font-extrabold text-emerald-800 bg-emerald-50 px-3 py-1 sm:px-4 sm:py-1 rounded-xl border border-emerald-200 inline-block">
@@ -441,7 +474,7 @@ try {
       </div>
     </div>
 
-    <!-- Bottom Navigation Bar (Large touch targets for iPhone & iPad thumbs) -->
+    <!-- Bottom Navigation Bar -->
     <div class="bg-white border border-slate-200 rounded-2xl p-2.5 sm:p-4 shadow-sm flex items-center justify-between gap-2">
       <button onclick="prevCard(event)" class="min-h-[44px] px-3.5 sm:px-4 py-2 rounded-xl border border-slate-300 bg-slate-50 text-xs sm:text-sm font-semibold hover:bg-slate-100 transition flex items-center gap-1 shadow-sm active:scale-95 touch-manipulate">
         <span>←</span> <span>ก่อนหน้า</span>
@@ -469,12 +502,12 @@ try {
       <kbd class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-mono">←</kbd>/<kbd class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-mono">→</kbd> เปลี่ยนคำ • 
       <kbd class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-mono">1/2/3</kbd> บันทึก MySQL • 
       <kbd class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-mono">S</kbd> ออกเสียง</span>
-      <span class="sm:hidden">📱 <b>การใช้งานบนมือถือ:</b> ปัดซ้าย/ขวาเพื่อเปลี่ยนคำ • แตะตัวการ์ดเพื่อพลิก • แตะปุ่มลำโพงเพื่อฟังเสียง</span>
+      <span class="sm:hidden">📱 <b>การใช้งาน:</b> ปัดซ้าย/ขวาเพื่อเปลี่ยนคำ • แตะตัวการ์ดเพื่อพลิก • แตะปุ่มลำโพงเพื่อฟังเสียงกริยา 3 ช่อง</span>
     </div>
 
   </div>
 
-  <!-- MODAL: Add / Edit Flashcard (Mobile responsive) -->
+  <!-- MODAL: Add / Edit Flashcard (Including V.1, V.2, V.3) -->
   <div id="card-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
     <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90dvh] overflow-y-auto ios-scroll p-4 sm:p-5 shadow-2xl border border-slate-200 space-y-3.5">
       <div class="flex items-center justify-between border-b pb-2.5">
@@ -490,7 +523,7 @@ try {
           </div>
           <div>
             <label class="block font-medium text-slate-700 mb-1">หมวดหมู่ (Category) *</label>
-            <select id="form-category" class="w-full p-2 border border-slate-300 rounded-lg text-xs">
+            <select id="form-category" onchange="toggleVerbInputs(this.value)" class="w-full p-2 border border-slate-300 rounded-lg text-xs">
               <option value="คำนาม (Noun)">คำนาม (Noun)</option>
               <option value="คำกริยา (Verb)">คำกริยา (Verb)</option>
               <option value="คำคุณศัพท์ (Adjective)">คำคุณศัพท์ (Adjective)</option>
@@ -502,10 +535,29 @@ try {
           </div>
         </div>
 
+        <!-- 3 Forms Section for Verbs -->
+        <div id="form-verb-section" class="bg-blue-50/70 border border-blue-200 rounded-xl p-2.5 space-y-2">
+          <span class="font-bold text-blue-800 text-[11px] block">📌 กริยา 3 ช่อง (สำหรับหมวดคำกริยา):</span>
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-[10px] text-slate-600 mb-0.5">V.1 รูปเดิม</label>
+              <input type="text" id="form-v1" placeholder="เช่น accept" class="w-full p-1.5 border border-slate-300 rounded-lg font-medium text-xs">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-600 mb-0.5">V.2 อดีต (Past)</label>
+              <input type="text" id="form-v2" placeholder="เช่น accepted" class="w-full p-1.5 border border-slate-300 rounded-lg font-medium text-xs">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-600 mb-0.5">V.3 Participle</label>
+              <input type="text" id="form-v3" placeholder="เช่น accepted" class="w-full p-1.5 border border-slate-300 rounded-lg font-medium text-xs">
+            </div>
+          </div>
+        </div>
+
         <div class="grid grid-cols-3 gap-2">
           <div>
             <label class="block font-medium text-slate-700 mb-1">ชนิดคำ (POS)</label>
-            <input type="text" id="form-pos" placeholder="เช่น n., v." class="w-full p-2 border border-slate-300 rounded-lg">
+            <input type="text" id="form-pos" placeholder="เช่น v., n." class="w-full p-2 border border-slate-300 rounded-lg">
           </div>
           <div>
             <label class="block font-medium text-slate-700 mb-1">คำอ่านไทย</label>
@@ -702,7 +754,6 @@ try {
         const diffX = touchEndX - touchStartX;
         const diffY = touchEndY - touchStartY;
 
-        // If horizontal motion is greater than vertical, mark as swiping
         if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 25) {
           isTouchSwiping = true;
         }
@@ -714,16 +765,12 @@ try {
         const absX = Math.abs(diffX);
         const absY = Math.abs(diffY);
 
-        // Minimum swipe distance: 45px
         if (absX > 45 && absX > absY * 1.3) {
           if (diffX < 0) {
-            // Swiped Left -> Next Card
             nextCard();
           } else {
-            // Swiped Right -> Previous Card
             prevCard();
           }
-          // Prevent accidental flip after swipe
           setTimeout(function() {
             isTouchSwiping = false;
           }, 100);
@@ -800,6 +847,9 @@ try {
       if (searchQuery) {
         list = list.filter(function(c) {
           return (c.word && c.word.toLowerCase().includes(searchQuery)) ||
+                 (c.v1 && c.v1.toLowerCase().includes(searchQuery)) ||
+                 (c.v2 && c.v2.toLowerCase().includes(searchQuery)) ||
+                 (c.v3 && c.v3.toLowerCase().includes(searchQuery)) ||
                  (c.meaning && c.meaning.toLowerCase().includes(searchQuery)) ||
                  (c.reading && c.reading.toLowerCase().includes(searchQuery)) ||
                  (c.example && c.example.toLowerCase().includes(searchQuery)) ||
@@ -828,6 +878,8 @@ try {
         document.getElementById("front-cloze").innerHTML = "—";
         document.getElementById("front-index").innerText = "0 / 0";
         document.getElementById("front-icon").innerText = "🔍";
+        document.getElementById("front-verb-box").classList.add("hidden");
+        document.getElementById("back-verb-box").classList.add("hidden");
         return;
       }
 
@@ -836,12 +888,35 @@ try {
 
       const c = cards[currentIndex];
       const st = mastery[c.num] || "unseen";
+      const isVerbWithThreeForms = (c.v1 && c.v2 && c.v3);
 
       // Front elements
       document.getElementById("front-cat-badge").innerText = c.category;
       document.getElementById("front-index").innerText = "#" + c.num + " / " + rawCards.length + " (" + (currentIndex + 1) + "/" + cards.length + ")";
       document.getElementById("front-icon").innerText = c.icon || "📖";
-      document.getElementById("front-word").innerText = c.word;
+      
+      // Front Word & Verb 3 Forms
+      const frontWordEl = document.getElementById("front-word");
+      const frontVerbBox = document.getElementById("front-verb-box");
+      const backVerbBox = document.getElementById("back-verb-box");
+
+      if (isVerbWithThreeForms) {
+        frontWordEl.innerHTML = `<span class="text-blue-700">${c.v1}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${c.v2}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${c.v3}</span>`;
+        frontVerbBox.classList.remove("hidden");
+        document.getElementById("front-v1").innerText = c.v1;
+        document.getElementById("front-v2").innerText = c.v2;
+        document.getElementById("front-v3").innerText = c.v3;
+
+        backVerbBox.classList.remove("hidden");
+        document.getElementById("back-v1").innerText = c.v1;
+        document.getElementById("back-v2").innerText = c.v2;
+        document.getElementById("back-v3").innerText = c.v3;
+      } else {
+        frontWordEl.innerText = c.word;
+        frontVerbBox.classList.add("hidden");
+        backVerbBox.classList.add("hidden");
+      }
+
       document.getElementById("front-reading").innerText = (c.pos ? c.pos + " " : "") + "คำอ่าน: " + (c.reading || "—");
 
       // Cloze highlight
@@ -874,7 +949,14 @@ try {
       // Back elements
       document.getElementById("back-cat-badge").innerText = c.category;
       document.getElementById("back-index").innerText = "#" + c.num + " / " + rawCards.length;
-      document.getElementById("back-word").innerText = c.word;
+      
+      const backWordEl = document.getElementById("back-word");
+      if (isVerbWithThreeForms) {
+        backWordEl.innerHTML = `<span class="text-emerald-700">${c.v1}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${c.v2}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${c.v3}</span>`;
+      } else {
+        backWordEl.innerText = c.word;
+      }
+
       document.getElementById("back-reading").innerText = "(" + (c.pos ? c.pos + " " : "") + (c.reading || "") + ")";
       document.getElementById("back-meaning").innerText = c.meaning;
       document.getElementById("back-example").innerHTML = "<b>ประโยคเต็ม:</b> " + highlightWord(c.example, c.word);
@@ -910,7 +992,6 @@ try {
     }
 
     function flipCard(event) {
-      // If user was swiping with finger on mobile, do not flip
       if (isTouchSwiping) {
         isTouchSwiping = false;
         return;
@@ -985,11 +1066,9 @@ try {
       const c = cards[currentIndex];
       mastery[c.num] = status;
 
-      // Update UI immediately (optimistic UI)
       updateStatsUI();
       renderCurrentCard();
 
-      // Send to MySQL backend
       const syncEl = document.getElementById("sync-status");
       if (syncEl) syncEl.innerHTML = "⏳ ซิงค์...";
 
@@ -1013,7 +1092,6 @@ try {
         if (syncEl) syncEl.innerHTML = "⚠️ ซิงค์ขัดข้อง";
       });
 
-      // Auto advance
       setTimeout(function() {
         nextCard();
       }, 230);
@@ -1066,7 +1144,6 @@ try {
       }
     }
 
-    // Switch user profile
     function switchUser(userId) {
       currentUserId = parseInt(userId, 10);
       const syncEl = document.getElementById("sync-status");
@@ -1087,7 +1164,7 @@ try {
       });
     }
 
-    // Speech Audio
+    // Audio Engine: Supports reading 3 verb forms in sequence or single word
     function speakWord(event) {
       if (event) {
         event.stopPropagation();
@@ -1095,7 +1172,6 @@ try {
       }
       if (cards.length === 0) return;
       const c = cards[currentIndex];
-      const wordToSpeak = (c.word || "").replace(/xx/, '').replace(/[…\.]/g, '').trim();
 
       const btns = [document.getElementById("speaker-btn"), document.getElementById("speaker-btn-back")];
       btns.forEach(function(btn) {
@@ -1103,10 +1179,75 @@ try {
           btn.classList.add("scale-125", "text-blue-500", "ring-2", "ring-blue-400");
           setTimeout(function() {
             btn.classList.remove("scale-125", "text-blue-500", "ring-2", "ring-blue-400");
-          }, 450);
+          }, 600);
         }
       });
 
+      // If card has 3 verb forms (v1, v2, v3), read all 3 forms in sequence
+      if (c.v1 && c.v2 && c.v3) {
+        speakThreeWords(c.v1, c.v2, c.v3);
+        return;
+      }
+
+      // Normal single word
+      const wordToSpeak = (c.word || "").replace(/xx/, '').replace(/[…\.]/g, '').trim();
+      playSingleAudio(wordToSpeak);
+    }
+
+    // Read 3 verb forms sequentially with natural spacing
+    function speakThreeWords(w1, w2, w3) {
+      if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const words = [w1, w2, w3];
+      let i = 0;
+
+      function playNext() {
+        if (i >= words.length) return;
+        const currentWord = words[i++];
+        const SpeechClass = window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
+        if (!SpeechClass) return;
+
+        const u = new SpeechClass(currentWord);
+        u.lang = "en-US";
+        u.rate = 0.82;
+
+        try {
+          const voices = window.speechSynthesis.getVoices();
+          const enVoice = voices.find(function(v) {
+            return (v.lang === "en-US" || v.lang.startsWith("en")) &&
+                   (v.name.includes("Google") || v.name.includes("Samantha") || v.name.includes("Siri") || v.default);
+          });
+          if (enVoice) u.voice = enVoice;
+        } catch(e) {}
+
+        u.onend = function() {
+          setTimeout(playNext, 260); // Clean pause between V.1 -> V.2 -> V.3
+        };
+        u.onerror = function() {
+          setTimeout(playNext, 200);
+        };
+
+        window.speechSynthesis.speak(u);
+      }
+
+      playNext();
+    }
+
+    // Pronounce a single specific form when tapped
+    function speakSingleWord(event, formKey) {
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+      if (cards.length === 0) return;
+      const c = cards[currentIndex];
+      const word = c[formKey] || c.word;
+      playSingleAudio(word);
+    }
+
+    function playSingleAudio(wordToSpeak) {
       const audioUrl = "https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(wordToSpeak) + "&type=2";
       if (typeof Audio !== "undefined") {
         try {
@@ -1124,7 +1265,6 @@ try {
           return;
         } catch (e) {}
       }
-
       fallbackSpeechSynthesis(wordToSpeak);
     }
 
@@ -1152,6 +1292,15 @@ try {
       } catch (e) {}
     }
 
+    function toggleVerbInputs(cat) {
+      const verbSec = document.getElementById("form-verb-section");
+      if (cat === "คำกริยา (Verb)") {
+        verbSec.classList.remove("hidden");
+      } else {
+        verbSec.classList.add("hidden");
+      }
+    }
+
     // Modal Add / Edit Card
     function openCardModal(cardToEdit = null) {
       const modal = document.getElementById("card-modal");
@@ -1164,6 +1313,9 @@ try {
         document.getElementById("form-num").value = cardToEdit.num;
         document.getElementById("form-word").value = cardToEdit.word || "";
         document.getElementById("form-pos").value = cardToEdit.pos || "";
+        document.getElementById("form-v1").value = cardToEdit.v1 || "";
+        document.getElementById("form-v2").value = cardToEdit.v2 || "";
+        document.getElementById("form-v3").value = cardToEdit.v3 || "";
         document.getElementById("form-meaning").value = cardToEdit.meaning || "";
         document.getElementById("form-category").value = cardToEdit.category || "คำนาม (Noun)";
         document.getElementById("form-reading").value = cardToEdit.reading || "";
@@ -1173,11 +1325,13 @@ try {
         document.getElementById("form-synonyms").value = cardToEdit.synonyms || "";
         document.getElementById("form-antonyms").value = cardToEdit.antonyms || "";
         document.getElementById("form-hook").value = cardToEdit.memory_hook || "";
+        toggleVerbInputs(cardToEdit.category);
       } else {
         title.innerText = "➕ เพิ่มคำศัพท์ใหม่ลงใน MySQL";
         delBtn.classList.add("hidden");
         document.getElementById("card-form").reset();
         document.getElementById("form-num").value = "0";
+        toggleVerbInputs("คำนาม (Noun)");
       }
 
       modal.classList.remove("hidden");
@@ -1201,6 +1355,9 @@ try {
         num: num,
         word: document.getElementById("form-word").value.trim(),
         pos: document.getElementById("form-pos").value.trim(),
+        v1: document.getElementById("form-v1").value.trim(),
+        v2: document.getElementById("form-v2").value.trim(),
+        v3: document.getElementById("form-v3").value.trim(),
         meaning: document.getElementById("form-meaning").value.trim(),
         category: document.getElementById("form-category").value,
         reading: document.getElementById("form-reading").value.trim(),
@@ -1350,6 +1507,7 @@ try {
     window.handleStatusFilter = handleStatusFilter;
     window.resetProgress = resetProgress;
     window.speakWord = speakWord;
+    window.speakSingleWord = speakSingleWord;
     window.switchUser = switchUser;
     window.openCardModal = openCardModal;
     window.editCurrentCard = editCurrentCard;
@@ -1361,6 +1519,7 @@ try {
     window.saveNewUser = saveNewUser;
     window.openStatsModal = openStatsModal;
     window.closeStatsModal = closeStatsModal;
+    window.toggleVerbInputs = toggleVerbInputs;
 
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", init);
