@@ -172,14 +172,19 @@ try {
       scrollbar-width: none;
     }
     .fluid-word {
-      font-size: clamp(1.4rem, 4.5vw + 0.2rem, 2.3rem);
-      line-height: 1.2;
+      font-size: clamp(1.85rem, 6vw + 0.2rem, 3.1rem);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+    .fluid-reading {
+      font-size: clamp(1rem, 3.4vw + 0.1rem, 1.35rem);
+      line-height: 1.45;
     }
     .fluid-meaning {
-      font-size: clamp(1.15rem, 3.8vw, 1.5rem);
+      font-size: clamp(1.3rem, 4.4vw, 1.85rem);
     }
     .fluid-icon {
-      font-size: clamp(2.5rem, 7vw, 4rem);
+      font-size: clamp(2.8rem, 8vw, 4.5rem);
     }
     .ios-scroll {
       -webkit-overflow-scrolling: touch;
@@ -334,31 +339,31 @@ try {
             <!-- Center Target Word & Verb Forms -->
             <div class="my-3 sm:my-6 text-center">
               <div class="fluid-icon mb-1.5" id="front-icon">🔑</div>
-              <div class="flex items-center justify-center gap-2 flex-wrap">
+              <div class="flex items-center justify-center gap-2.5 flex-wrap">
                 <h2 class="fluid-word font-extrabold tracking-tight text-slate-900" id="front-word">
                   access
                 </h2>
-                <button onclick="speakWord(event)" id="speaker-btn" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition border border-blue-200 touch-target active:scale-90 flex-shrink-0" title="ฟังเสียงอ่าน (หากเป็นกริยาจะอ่านครบ 3 คำ)">
-                  <span class="text-base sm:text-lg">🔊</span>
+                <button onclick="speakWord(event)" id="speaker-btn" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition border-2 border-blue-200 touch-target active:scale-90 flex-shrink-0 shadow-sm" title="ฟังเสียงอ่าน (กริยาจะอ่านต่อเนื่อง 3 ช่อง V.1, V.2, V.3)">
+                  <span class="text-xl sm:text-2xl">🔊</span>
                 </button>
               </div>
 
               <!-- Dedicated 3 Verb Forms Container (Shows only for verbs) -->
-              <div id="front-verb-box" class="mt-2.5 inline-flex items-center justify-center gap-1.5 sm:gap-2.5 flex-wrap bg-blue-50/90 border border-blue-200 rounded-xl px-3 py-1.5 shadow-sm text-xs sm:text-sm hidden">
-                <span class="inline-flex items-center gap-1 font-bold text-blue-900 cursor-pointer hover:bg-blue-100/80 px-2 py-0.5 rounded-lg transition" onclick="speakSingleWord(event, 'v1')" title="คลิกเพื่อฟังเสียง V.1">
-                  <span class="text-[10px] bg-blue-200/90 text-blue-800 font-bold px-1.5 py-0.5 rounded font-mono">V.1</span> <b id="front-v1">accept</b>
+              <div id="front-verb-box" class="mt-3 inline-flex items-center justify-center gap-2 sm:gap-3 flex-wrap bg-blue-50/95 border-2 border-blue-200 rounded-2xl px-3.5 py-2 shadow-sm text-sm sm:text-base hidden transition-all">
+                <span id="badge-v1" class="inline-flex items-center gap-1.5 font-bold text-blue-900 cursor-pointer hover:bg-blue-100/90 px-2.5 py-1 rounded-xl transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v1')" title="คลิกเพื่อฟังเสียง V.1">
+                  <span class="text-[11px] bg-blue-200 text-blue-900 font-bold px-1.5 py-0.5 rounded font-mono">V.1</span> <b id="front-v1" class="text-base sm:text-lg text-blue-950 font-extrabold">accept</b>
                 </span>
-                <span class="text-blue-300 font-bold">➔</span>
-                <span class="inline-flex items-center gap-1 font-bold text-blue-900 cursor-pointer hover:bg-blue-100/80 px-2 py-0.5 rounded-lg transition" onclick="speakSingleWord(event, 'v2')" title="คลิกเพื่อฟังเสียง V.2">
-                  <span class="text-[10px] bg-blue-200/90 text-blue-800 font-bold px-1.5 py-0.5 rounded font-mono">V.2</span> <b id="front-v2">accepted</b>
+                <span class="text-blue-300 font-bold text-base">➔</span>
+                <span id="badge-v2" class="inline-flex items-center gap-1.5 font-bold text-blue-900 cursor-pointer hover:bg-blue-100/90 px-2.5 py-1 rounded-xl transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v2')" title="คลิกเพื่อฟังเสียง V.2">
+                  <span class="text-[11px] bg-blue-200 text-blue-900 font-bold px-1.5 py-0.5 rounded font-mono">V.2</span> <b id="front-v2" class="text-base sm:text-lg text-blue-950 font-extrabold">accepted</b>
                 </span>
-                <span class="text-blue-300 font-bold">➔</span>
-                <span class="inline-flex items-center gap-1 font-bold text-blue-900 cursor-pointer hover:bg-blue-100/80 px-2 py-0.5 rounded-lg transition" onclick="speakSingleWord(event, 'v3')" title="คลิกเพื่อฟังเสียง V.3">
-                  <span class="text-[10px] bg-blue-200/90 text-blue-800 font-bold px-1.5 py-0.5 rounded font-mono">V.3</span> <b id="front-v3">accepted</b>
+                <span class="text-blue-300 font-bold text-base">➔</span>
+                <span id="badge-v3" class="inline-flex items-center gap-1.5 font-bold text-blue-900 cursor-pointer hover:bg-blue-100/90 px-2.5 py-1 rounded-xl transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v3')" title="คลิกเพื่อฟังเสียง V.3">
+                  <span class="text-[11px] bg-blue-200 text-blue-900 font-bold px-1.5 py-0.5 rounded font-mono">V.3</span> <b id="front-v3" class="text-base sm:text-lg text-blue-950 font-extrabold">accepted</b>
                 </span>
               </div>
 
-              <p class="text-xs sm:text-sm text-slate-500 mt-1" id="front-reading">
+              <p class="fluid-reading text-slate-700 font-semibold mt-2 flex items-center justify-center gap-1.5 flex-wrap" id="front-reading">
                 คำอ่าน: 'แอ็คเซิซ
               </p>
             </div>
@@ -405,34 +410,34 @@ try {
 
             <!-- Word & Thai Meaning -->
             <div class="text-center my-2 sm:my-3">
-              <div class="flex items-center justify-center gap-2 flex-wrap">
+              <div class="flex items-center justify-center gap-2.5 flex-wrap">
                 <span id="back-word" class="fluid-word font-bold text-slate-900">access</span>
-                <button onclick="speakWord(event)" id="speaker-btn-back" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-emerald-50 text-emerald-600 hover:bg-emerald-100 flex items-center justify-center transition border border-emerald-200 touch-target active:scale-90 flex-shrink-0" title="ฟังเสียงอ่าน">
-                  <span class="text-sm sm:text-base">🔊</span>
+                <button onclick="speakWord(event)" id="speaker-btn-back" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-emerald-50 text-emerald-600 hover:bg-emerald-100 flex items-center justify-center transition border-2 border-emerald-200 touch-target active:scale-90 flex-shrink-0 shadow-sm" title="ฟังเสียงอ่าน">
+                  <span class="text-lg sm:text-xl">🔊</span>
                 </button>
               </div>
 
               <!-- Dedicated 3 Verb Forms Diagram on Back (Shows only for verbs) -->
-              <div id="back-verb-box" class="mt-2 inline-flex items-center justify-center gap-2 sm:gap-3 flex-wrap bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-2 shadow-sm text-xs sm:text-sm hidden">
-                <div class="text-center px-1.5 py-0.5 rounded-lg hover:bg-emerald-100/60 cursor-pointer transition" onclick="speakSingleWord(event, 'v1')" title="ฟังเสียง V.1">
-                  <span class="text-[10px] font-bold text-emerald-600 uppercase block">V.1 รูปเดิม</span>
-                  <span class="font-extrabold text-emerald-950 text-sm sm:text-base" id="back-v1">accept</span>
+              <div id="back-verb-box" class="mt-2.5 inline-flex items-center justify-center gap-2 sm:gap-3 flex-wrap bg-emerald-50/95 border-2 border-emerald-200 rounded-2xl px-4 py-2 shadow-sm text-sm sm:text-base hidden transition-all">
+                <div id="badge-back-v1" class="text-center px-2 py-1 rounded-xl hover:bg-emerald-100/70 cursor-pointer transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v1')" title="ฟังเสียง V.1">
+                  <span class="text-[11px] font-bold text-emerald-700 uppercase block">V.1 รูปเดิม</span>
+                  <span class="font-extrabold text-emerald-950 text-base sm:text-lg" id="back-v1">accept</span>
                 </div>
-                <span class="text-emerald-400 font-bold">➔</span>
-                <div class="text-center px-1.5 py-0.5 rounded-lg hover:bg-emerald-100/60 cursor-pointer transition" onclick="speakSingleWord(event, 'v2')" title="ฟังเสียง V.2">
-                  <span class="text-[10px] font-bold text-emerald-600 uppercase block">V.2 อดีต (Past)</span>
-                  <span class="font-extrabold text-emerald-950 text-sm sm:text-base" id="back-v2">accepted</span>
+                <span class="text-emerald-400 font-bold text-base">➔</span>
+                <div id="badge-back-v2" class="text-center px-2 py-1 rounded-xl hover:bg-emerald-100/70 cursor-pointer transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v2')" title="ฟังเสียง V.2">
+                  <span class="text-[11px] font-bold text-emerald-700 uppercase block">V.2 อดีต (Past)</span>
+                  <span class="font-extrabold text-emerald-950 text-base sm:text-lg" id="back-v2">accepted</span>
                 </div>
-                <span class="text-emerald-400 font-bold">➔</span>
-                <div class="text-center px-1.5 py-0.5 rounded-lg hover:bg-emerald-100/60 cursor-pointer transition" onclick="speakSingleWord(event, 'v3')" title="ฟังเสียง V.3">
-                  <span class="text-[10px] font-bold text-emerald-600 uppercase block">V.3 Participle</span>
-                  <span class="font-extrabold text-emerald-950 text-sm sm:text-base" id="back-v3">accepted</span>
+                <span class="text-emerald-400 font-bold text-base">➔</span>
+                <div id="badge-back-v3" class="text-center px-2 py-1 rounded-xl hover:bg-emerald-100/70 cursor-pointer transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v3')" title="ฟังเสียง V.3">
+                  <span class="text-[11px] font-bold text-emerald-700 uppercase block">V.3 Participle</span>
+                  <span class="font-extrabold text-emerald-950 text-base sm:text-lg" id="back-v3">accepted</span>
                 </div>
               </div>
 
-              <div id="back-reading" class="text-xs text-slate-500 mt-0.5">('แอ็คเซิซ)</div>
-              <div class="mt-2 inline-block">
-                <span id="back-meaning" class="fluid-meaning font-extrabold text-emerald-800 bg-emerald-50 px-3 py-1 sm:px-4 sm:py-1 rounded-xl border border-emerald-200 inline-block">
+              <div id="back-reading" class="fluid-reading text-slate-700 font-semibold mt-1.5 flex items-center justify-center gap-1.5 flex-wrap">('แอ็คเซิซ)</div>
+              <div class="mt-2.5 inline-block">
+                <span id="back-meaning" class="fluid-meaning font-extrabold text-emerald-800 bg-emerald-50 px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-2xl border-2 border-emerald-200 inline-block shadow-sm">
                   การเข้าถึง
                 </span>
               </div>
@@ -844,12 +849,20 @@ try {
       }, { passive: true });
     }
 
-    // iOS Audio Unlock
+    // iOS Audio Unlock for both HTML5 Audio and Web Speech
     function unlockAudioOnUserGesture() {
       const unlock = function() {
         if ("speechSynthesis" in window) {
           try {
             window.speechSynthesis.getVoices();
+          } catch(e) {}
+        }
+        if (typeof Audio !== "undefined") {
+          try {
+            const silentAudio = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
+            silentAudio.volume = 0.01;
+            const p = silentAudio.play();
+            if (p) p.catch(() => {});
           } catch(e) {}
         }
         document.removeEventListener("touchstart", unlock);
@@ -981,7 +994,8 @@ try {
         backVerbBox.classList.add("hidden");
       }
 
-      document.getElementById("front-reading").innerText = (c.pos ? c.pos + " " : "") + "คำอ่าน: " + (c.reading || "—");
+      const posBadge = c.pos ? `<span class="px-2 py-0.5 rounded-lg bg-blue-100 text-blue-800 font-mono text-xs font-bold border border-blue-200 mr-1.5 shadow-sm">${c.pos}</span>` : "";
+      document.getElementById("front-reading").innerHTML = posBadge + `<span class="text-slate-500 font-medium">คำอ่าน:</span> <span class="text-slate-900 font-bold tracking-wide">${c.reading || "—"}</span>`;
 
       // Cloze highlight
       const clozeHtml = (c.cloze || c.example || "")
@@ -1021,7 +1035,8 @@ try {
         backWordEl.innerText = c.word;
       }
 
-      document.getElementById("back-reading").innerText = "(" + (c.pos ? c.pos + " " : "") + (c.reading || "") + ")";
+      const backPosBadge = c.pos ? `<span class="px-2 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 font-mono text-xs font-bold border border-emerald-200 mr-1.5 shadow-sm">${c.pos}</span>` : "";
+      document.getElementById("back-reading").innerHTML = backPosBadge + `<span class="text-slate-500 font-medium">คำอ่าน:</span> <span class="text-slate-900 font-bold tracking-wide">(${c.reading || "—"})</span>`;
       document.getElementById("back-meaning").innerText = c.meaning;
       document.getElementById("back-example").innerHTML = "<b>ประโยคเต็ม:</b> " + highlightWord(c.example, c.word, v1);
       document.getElementById("back-example-th").innerHTML = "<b>แปล:</b> " + (c.example_th || "—");
@@ -1232,6 +1247,31 @@ try {
       });
     }
 
+    let audioSequenceTimer = null;
+    window._activeUtterances = [];
+
+    // Visual highlight for the active verb badge (V.1, V.2, V.3) while reading
+    function highlightActiveVerbBadge(formNum) {
+      clearVerbBadgeHighlights();
+      const badgeFront = document.getElementById("badge-v" + formNum);
+      const badgeBack = document.getElementById("badge-back-v" + formNum);
+      if (badgeFront) {
+        badgeFront.classList.add("ring-2", "ring-blue-500", "bg-blue-200", "scale-105");
+      }
+      if (badgeBack) {
+        badgeBack.classList.add("ring-2", "ring-emerald-500", "bg-emerald-200", "scale-105");
+      }
+    }
+
+    function clearVerbBadgeHighlights() {
+      [1, 2, 3].forEach(function(n) {
+        const bf = document.getElementById("badge-v" + n);
+        const bb = document.getElementById("badge-back-v" + n);
+        if (bf) bf.classList.remove("ring-2", "ring-blue-500", "bg-blue-200", "scale-105");
+        if (bb) bb.classList.remove("ring-2", "ring-emerald-500", "bg-emerald-200", "scale-105");
+      });
+    }
+
     // Audio Engine: Supports reading 3 verb forms in sequence or single word
     function speakWord(event) {
       if (event) {
@@ -1244,9 +1284,9 @@ try {
       const btns = [document.getElementById("speaker-btn"), document.getElementById("speaker-btn-back")];
       btns.forEach(function(btn) {
         if (btn) {
-          btn.classList.add("scale-125", "text-blue-500", "ring-2", "ring-blue-400");
+          btn.classList.add("scale-125", "text-blue-500", "ring-4", "ring-blue-300");
           setTimeout(function() {
-            btn.classList.remove("scale-125", "text-blue-500", "ring-2", "ring-blue-400");
+            btn.classList.remove("scale-125", "text-blue-500", "ring-4", "ring-blue-300");
           }, 600);
         }
       });
@@ -1254,7 +1294,7 @@ try {
       // If card has 3 verb forms (v1, v2, v3), read all 3 forms in sequence
       const vForms = getCardVerbForms(c);
       if (vForms.hasForms) {
-        speakThreeWords(vForms.v1, vForms.v2, vForms.v3);
+        playThreeAudioWords(vForms.v1, vForms.v2, vForms.v3);
         return;
       }
 
@@ -1266,41 +1306,76 @@ try {
       playSingleAudio(wordToSpeak);
     }
 
-    // Read 3 verb forms sequentially with natural spacing and distinct articulation
-    function speakThreeWords(w1, w2, w3) {
-      const clean1 = (w1 || "").replace(/[^a-zA-Z\s]/g, '').trim();
-      const clean2 = (w2 || "").replace(/[^a-zA-Z\s]/g, '').trim();
-      const clean3 = (w3 || "").replace(/[^a-zA-Z\s]/g, '').trim();
-
-      if (typeof window !== "undefined" && ("speechSynthesis" in window)) {
+    // Play 3 verb forms sequentially using studio native dictionary audio
+    function playThreeAudioWords(w1, w2, w3) {
+      if (audioSequenceTimer) {
+        clearTimeout(audioSequenceTimer);
+        audioSequenceTimer = null;
+      }
+      if (currentAudio) {
         try {
-          window.speechSynthesis.cancel();
-          const SpeechClass = window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
-          if (SpeechClass) {
-            // Using period boundaries creates natural, distinct pauses for V.1 -> V.2 -> V.3
-            const phrase = clean1 + ". " + clean2 + ". " + clean3 + ".";
-            const u = new SpeechClass(phrase);
-            u.lang = "en-US";
-            u.rate = 0.78;
+          currentAudio.pause();
+          currentAudio.currentTime = 0;
+        } catch(e) {}
+      }
 
-            const voices = window.speechSynthesis.getVoices();
-            if (voices && voices.length > 0) {
-              const enVoice = voices.find(function(v) {
-                return (v.lang === "en-US" || v.lang.startsWith("en")) &&
-                       (v.name.includes("Google") || v.name.includes("Samantha") || v.name.includes("Siri") || v.name.includes("Daniel") || v.default);
-              });
-              if (enVoice) u.voice = enVoice;
+      const words = [w1, w2, w3].map(function(w) {
+        return (w || "").replace(/[^a-zA-Z\s]/g, '').trim();
+      }).filter(Boolean);
+
+      if (words.length === 0) return;
+
+      let idx = 0;
+
+      function playNext() {
+        if (idx >= words.length) {
+          clearVerbBadgeHighlights();
+          return;
+        }
+
+        const currentWord = words[idx];
+        const currentFormNum = idx + 1;
+        highlightActiveVerbBadge(currentFormNum);
+
+        const audioUrl = "https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(currentWord) + "&type=2";
+
+        try {
+          const audio = new Audio(audioUrl);
+          currentAudio = audio;
+
+          audio.onended = function() {
+            clearVerbBadgeHighlights();
+            idx++;
+            if (idx < words.length) {
+              audioSequenceTimer = setTimeout(playNext, 340);
             }
+          };
 
-            window.speechSynthesis.speak(u);
-            return;
+          audio.onerror = function() {
+            clearVerbBadgeHighlights();
+            idx++;
+            if (idx < words.length) {
+              audioSequenceTimer = setTimeout(playNext, 250);
+            } else {
+              speakSequentialWebSpeech(words);
+            }
+          };
+
+          const p = audio.play();
+          if (p !== undefined) {
+            p.catch(function(err) {
+              console.warn("Audio sequence play error:", err);
+              clearVerbBadgeHighlights();
+              speakSequentialWebSpeech(words);
+            });
           }
-        } catch (e) {
-          console.warn("TTS speakThreeWords error:", e);
+        } catch(e) {
+          clearVerbBadgeHighlights();
+          speakSequentialWebSpeech(words);
         }
       }
 
-      playSingleAudio(clean1);
+      playNext();
     }
 
     // Pronounce a single specific form when tapped
@@ -1310,6 +1385,10 @@ try {
         event.preventDefault();
       }
       if (cards.length === 0) return;
+      if (audioSequenceTimer) {
+        clearTimeout(audioSequenceTimer);
+        audioSequenceTimer = null;
+      }
       const c = cards[currentIndex];
       const vForms = getCardVerbForms(c);
       let word = vForms[formKey] || c[formKey] || c.word;
@@ -1329,7 +1408,16 @@ try {
     }
 
     function playSingleAudio(wordToSpeak) {
-      const audioUrl = "https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(wordToSpeak) + "&type=2";
+      if (audioSequenceTimer) {
+        clearTimeout(audioSequenceTimer);
+        audioSequenceTimer = null;
+      }
+      clearVerbBadgeHighlights();
+
+      const cleanWord = (wordToSpeak || "").replace(/[^a-zA-Z\s]/g, '').trim();
+      if (!cleanWord) return;
+
+      const audioUrl = "https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(cleanWord) + "&type=2";
       if (typeof Audio !== "undefined") {
         try {
           if (currentAudio) {
@@ -1340,36 +1428,48 @@ try {
           const playPromise = currentAudio.play();
           if (playPromise !== undefined) {
             playPromise.catch(function(err) {
-              fallbackSpeechSynthesis(wordToSpeak);
+              fallbackSpeechSynthesis(cleanWord);
             });
           }
           return;
         } catch (e) {}
       }
-      fallbackSpeechSynthesis(wordToSpeak);
+      fallbackSpeechSynthesis(cleanWord);
     }
 
+    // Web Speech Fallback without iOS WebKit cancel bugs
     function fallbackSpeechSynthesis(text) {
       if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
       const SpeechClass = window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
       if (!SpeechClass) return;
 
       try {
-        window.speechSynthesis.cancel();
-        setTimeout(function() {
-          const u = new SpeechClass(text);
-          u.lang = "en-US";
-          u.rate = 0.85;
-          try {
-            const voices = window.speechSynthesis.getVoices();
-            const enVoice = voices.find(function(v) {
-              return (v.lang === "en-US" || v.lang.startsWith("en")) &&
-                     (v.name.includes("Google") || v.name.includes("Samantha") || v.name.includes("Siri") || v.default);
-            });
-            if (enVoice) u.voice = enVoice;
-          } catch (e) {}
-          window.speechSynthesis.speak(u);
-        }, 25);
+        if (window.speechSynthesis.speaking) {
+          window.speechSynthesis.cancel();
+        }
+        const u = new SpeechClass(text);
+        u.lang = "en-US";
+        u.rate = 0.85;
+        window._activeUtterances = [u];
+        window.speechSynthesis.speak(u);
+      } catch (e) {}
+    }
+
+    function speakSequentialWebSpeech(words) {
+      if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+      const SpeechClass = window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
+      if (!SpeechClass) return;
+
+      try {
+        if (window.speechSynthesis.speaking) {
+          window.speechSynthesis.cancel();
+        }
+        const phrase = words.join(". ") + ".";
+        const u = new SpeechClass(phrase);
+        u.lang = "en-US";
+        u.rate = 0.8;
+        window._activeUtterances = [u];
+        window.speechSynthesis.speak(u);
       } catch (e) {}
     }
 
