@@ -1801,7 +1801,7 @@
     },
     {
         "num": 101,
-        "word": "accept",
+        "word": "accept – accepted – accepted",
         "pos": "v.",
         "meaning": "ยอมรับ",
         "category": "คำกริยา (Verb)",
@@ -1819,7 +1819,7 @@
     },
     {
         "num": 102,
-        "word": "achieve",
+        "word": "achieve – achieved – achieved",
         "pos": "v.",
         "meaning": "บรรลุ",
         "category": "คำกริยา (Verb)",
@@ -1837,7 +1837,7 @@
     },
     {
         "num": 103,
-        "word": "acknowledge",
+        "word": "acknowledge – acknowledged – acknowledged",
         "pos": "v.",
         "meaning": "รับทราบ \/ ยอมรับ",
         "category": "คำกริยา (Verb)",
@@ -1855,7 +1855,7 @@
     },
     {
         "num": 104,
-        "word": "acquire",
+        "word": "acquire – acquired – acquired",
         "pos": "v.",
         "meaning": "ได้มา \/ เข้าซื้อ",
         "category": "คำกริยา (Verb)",
@@ -1873,7 +1873,7 @@
     },
     {
         "num": 105,
-        "word": "act",
+        "word": "act – acted – acted",
         "pos": "v.",
         "meaning": "กระทำ \/ แสดง",
         "category": "คำกริยา (Verb)",
@@ -1891,7 +1891,7 @@
     },
     {
         "num": 106,
-        "word": "adjust",
+        "word": "adjust – adjusted – adjusted",
         "pos": "v.",
         "meaning": "ปรับ \/ แก้ไข",
         "category": "คำกริยา (Verb)",
@@ -1909,7 +1909,7 @@
     },
     {
         "num": 107,
-        "word": "administer",
+        "word": "administer – administered – administered",
         "pos": "v.",
         "meaning": "บริหาร \/ จัดการ",
         "category": "คำกริยา (Verb)",
@@ -1927,7 +1927,7 @@
     },
     {
         "num": 108,
-        "word": "advertise",
+        "word": "advertise – advertised – advertised",
         "pos": "v.",
         "meaning": "โฆษณา",
         "category": "คำกริยา (Verb)",
@@ -1945,7 +1945,7 @@
     },
     {
         "num": 109,
-        "word": "advise",
+        "word": "advise – advised – advised",
         "pos": "v.",
         "meaning": "แนะนำ",
         "category": "คำกริยา (Verb)",
@@ -1963,7 +1963,7 @@
     },
     {
         "num": 110,
-        "word": "allocate",
+        "word": "allocate – allocated – allocated",
         "pos": "v.",
         "meaning": "จัดสรร",
         "category": "คำกริยา (Verb)",
@@ -1981,7 +1981,7 @@
     },
     {
         "num": 111,
-        "word": "analyze",
+        "word": "analyze – analyzed – analyzed",
         "pos": "v.",
         "meaning": "วิเคราะห์",
         "category": "คำกริยา (Verb)",
@@ -1999,7 +1999,7 @@
     },
     {
         "num": 112,
-        "word": "answer",
+        "word": "answer – answered – answered",
         "pos": "v.",
         "meaning": "ตอบ",
         "category": "คำกริยา (Verb)",
@@ -2017,7 +2017,7 @@
     },
     {
         "num": 113,
-        "word": "apply",
+        "word": "apply – applied – applied",
         "pos": "v.",
         "meaning": "สมัคร \/ ใช้",
         "category": "คำกริยา (Verb)",
@@ -2035,7 +2035,7 @@
     },
     {
         "num": 114,
-        "word": "appoint",
+        "word": "appoint – appointed – appointed",
         "pos": "v.",
         "meaning": "แต่งตั้ง",
         "category": "คำกริยา (Verb)",
@@ -2053,7 +2053,7 @@
     },
     {
         "num": 115,
-        "word": "approve",
+        "word": "approve – approved – approved",
         "pos": "v.",
         "meaning": "อนุมัติ",
         "category": "คำกริยา (Verb)",
@@ -2071,7 +2071,7 @@
     },
     {
         "num": 116,
-        "word": "arrange",
+        "word": "arrange – arranged – arranged",
         "pos": "v.",
         "meaning": "จัดการ \/ จัดเตรียม",
         "category": "คำกริยา (Verb)",
@@ -2089,7 +2089,7 @@
     },
     {
         "num": 117,
-        "word": "assist",
+        "word": "assist – assisted – assisted",
         "pos": "v.",
         "meaning": "ช่วยเหลือ",
         "category": "คำกริยา (Verb)",
@@ -2107,7 +2107,7 @@
     },
     {
         "num": 118,
-        "word": "assume",
+        "word": "assume – assumed – assumed",
         "pos": "v.",
         "meaning": "สมมุติ \/ รับหน้าที่",
         "category": "คำกริยา (Verb)",
@@ -2125,7 +2125,7 @@
     },
     {
         "num": 119,
-        "word": "attend",
+        "word": "attend – attended – attended",
         "pos": "v.",
         "meaning": "เข้าร่วม",
         "category": "คำกริยา (Verb)",
@@ -2143,7 +2143,7 @@
     },
     {
         "num": 120,
-        "word": "authorize",
+        "word": "authorize – authorized – authorized",
         "pos": "v.",
         "meaning": "อนุญาต \/ มอบอำนาจ",
         "category": "คำกริยา (Verb)",
@@ -2161,7 +2161,7 @@
     },
     {
         "num": 121,
-        "word": "avoid",
+        "word": "avoid – avoided – avoided",
         "pos": "v.",
         "meaning": "หลีกเลี่ยง",
         "category": "คำกริยา (Verb)",
@@ -2179,7 +2179,7 @@
     },
     {
         "num": 122,
-        "word": "balance",
+        "word": "balance – balanced – balanced",
         "pos": "v.",
         "meaning": "ทำให้สมดุล",
         "category": "คำกริยา (Verb)",
@@ -2197,7 +2197,7 @@
     },
     {
         "num": 123,
-        "word": "behave",
+        "word": "behave – behaved – behaved",
         "pos": "v.",
         "meaning": "ประพฤติ",
         "category": "คำกริยา (Verb)",
@@ -2215,7 +2215,7 @@
     },
     {
         "num": 124,
-        "word": "believe",
+        "word": "believe – believed – believed",
         "pos": "v.",
         "meaning": "เชื่อ",
         "category": "คำกริยา (Verb)",
@@ -2233,7 +2233,7 @@
     },
     {
         "num": 125,
-        "word": "build",
+        "word": "build – built – built",
         "pos": "v.",
         "meaning": "สร้าง",
         "category": "คำกริยา (Verb)",
@@ -2251,7 +2251,7 @@
     },
     {
         "num": 126,
-        "word": "calculate",
+        "word": "calculate – calculated – calculated",
         "pos": "v.",
         "meaning": "คำนวณ",
         "category": "คำกริยา (Verb)",
@@ -2269,7 +2269,7 @@
     },
     {
         "num": 127,
-        "word": "cancel",
+        "word": "cancel – canceled – canceled",
         "pos": "v.",
         "meaning": "ยกเลิก",
         "category": "คำกริยา (Verb)",
@@ -2287,7 +2287,7 @@
     },
     {
         "num": 128,
-        "word": "clarify",
+        "word": "clarify – clarified – clarified",
         "pos": "v.",
         "meaning": "ชี้แจง \/ ทำให้ชัดเจน",
         "category": "คำกริยา (Verb)",
@@ -2305,7 +2305,7 @@
     },
     {
         "num": 129,
-        "word": "collaborate",
+        "word": "collaborate – collaborated – collaborated",
         "pos": "v.",
         "meaning": "ร่วมมือ",
         "category": "คำกริยา (Verb)",
@@ -2323,7 +2323,7 @@
     },
     {
         "num": 130,
-        "word": "collect",
+        "word": "collect – collected – collected",
         "pos": "v.",
         "meaning": "เก็บรวบรวม",
         "category": "คำกริยา (Verb)",
@@ -2341,7 +2341,7 @@
     },
     {
         "num": 131,
-        "word": "communicate",
+        "word": "communicate – communicated – communicated",
         "pos": "v.",
         "meaning": "สื่อสาร",
         "category": "คำกริยา (Verb)",
@@ -2359,7 +2359,7 @@
     },
     {
         "num": 132,
-        "word": "compare",
+        "word": "compare – compared – compared",
         "pos": "v.",
         "meaning": "เปรียบเทียบ",
         "category": "คำกริยา (Verb)",
@@ -2377,7 +2377,7 @@
     },
     {
         "num": 133,
-        "word": "complete",
+        "word": "complete – completed – completed",
         "pos": "v.",
         "meaning": "ทำให้เสร็จ",
         "category": "คำกริยา (Verb)",
@@ -2395,7 +2395,7 @@
     },
     {
         "num": 134,
-        "word": "confirm",
+        "word": "confirm – confirmed – confirmed",
         "pos": "v.",
         "meaning": "ยืนยัน",
         "category": "คำกริยา (Verb)",
@@ -2413,7 +2413,7 @@
     },
     {
         "num": 135,
-        "word": "connect",
+        "word": "connect – connected – connected",
         "pos": "v.",
         "meaning": "เชื่อมต่อ",
         "category": "คำกริยา (Verb)",
@@ -2431,7 +2431,7 @@
     },
     {
         "num": 136,
-        "word": "consider",
+        "word": "consider – considered – considered",
         "pos": "v.",
         "meaning": "พิจารณา",
         "category": "คำกริยา (Verb)",
@@ -2449,7 +2449,7 @@
     },
     {
         "num": 137,
-        "word": "construct",
+        "word": "construct – constructed – constructed",
         "pos": "v.",
         "meaning": "ก่อสร้าง",
         "category": "คำกริยา (Verb)",
@@ -2467,7 +2467,7 @@
     },
     {
         "num": 138,
-        "word": "contact",
+        "word": "contact – contacted – contacted",
         "pos": "v.",
         "meaning": "ติดต่อ",
         "category": "คำกริยา (Verb)",
@@ -2485,7 +2485,7 @@
     },
     {
         "num": 139,
-        "word": "contribute",
+        "word": "contribute – contributed – contributed",
         "pos": "v.",
         "meaning": "มีส่วนร่วม \/ สนับสนุน",
         "category": "คำกริยา (Verb)",
@@ -2503,7 +2503,7 @@
     },
     {
         "num": 140,
-        "word": "control",
+        "word": "control – controlled – controlled",
         "pos": "v.",
         "meaning": "ควบคุม",
         "category": "คำกริยา (Verb)",
@@ -2521,7 +2521,7 @@
     },
     {
         "num": 141,
-        "word": "cooperate",
+        "word": "cooperate – cooperated – cooperated",
         "pos": "v.",
         "meaning": "ร่วมมือ \/ ให้ความร่วมมือ",
         "category": "คำกริยา (Verb)",
@@ -2539,7 +2539,7 @@
     },
     {
         "num": 142,
-        "word": "correct",
+        "word": "correct – corrected – corrected",
         "pos": "v.",
         "meaning": "แก้ไข",
         "category": "คำกริยา (Verb)",
@@ -2557,7 +2557,7 @@
     },
     {
         "num": 143,
-        "word": "create",
+        "word": "create – created – created",
         "pos": "v.",
         "meaning": "สร้าง \/ สร้างสรรค์",
         "category": "คำกริยา (Verb)",
@@ -2575,7 +2575,7 @@
     },
     {
         "num": 144,
-        "word": "decide",
+        "word": "decide – decided – decided",
         "pos": "v.",
         "meaning": "ตัดสินใจ",
         "category": "คำกริยา (Verb)",
@@ -2593,7 +2593,7 @@
     },
     {
         "num": 145,
-        "word": "decline",
+        "word": "decline – declined – declined",
         "pos": "v.",
         "meaning": "ปฏิเสธ \/ ลดลง",
         "category": "คำกริยา (Verb)",
@@ -2611,7 +2611,7 @@
     },
     {
         "num": 146,
-        "word": "deliver",
+        "word": "deliver – delivered – delivered",
         "pos": "v.",
         "meaning": "ส่ง \/ จัดส่ง",
         "category": "คำกริยา (Verb)",
@@ -2629,7 +2629,7 @@
     },
     {
         "num": 147,
-        "word": "demonstrate",
+        "word": "demonstrate – demonstrated – demonstrated",
         "pos": "v.",
         "meaning": "แสดงให้เห็น \/ สาธิต",
         "category": "คำกริยา (Verb)",
@@ -2647,7 +2647,7 @@
     },
     {
         "num": 148,
-        "word": "depend",
+        "word": "depend – depended – depended",
         "pos": "v.",
         "meaning": "ขึ้นอยู่กับ",
         "category": "คำกริยา (Verb)",
@@ -2665,7 +2665,7 @@
     },
     {
         "num": 149,
-        "word": "describe",
+        "word": "describe – described – described",
         "pos": "v.",
         "meaning": "อธิบาย \/ บรรยาย",
         "category": "คำกริยา (Verb)",
@@ -2683,7 +2683,7 @@
     },
     {
         "num": 150,
-        "word": "design",
+        "word": "design – designed – designed",
         "pos": "v.",
         "meaning": "ออกแบบ",
         "category": "คำกริยา (Verb)",
@@ -2701,7 +2701,7 @@
     },
     {
         "num": 151,
-        "word": "develop",
+        "word": "develop – developed – developed",
         "pos": "v.",
         "meaning": "พัฒนา",
         "category": "คำกริยา (Verb)",
@@ -2719,7 +2719,7 @@
     },
     {
         "num": 152,
-        "word": "discuss",
+        "word": "discuss – discussed – discussed",
         "pos": "v.",
         "meaning": "พูดคุย \/ ถกเถียง",
         "category": "คำกริยา (Verb)",
@@ -2737,7 +2737,7 @@
     },
     {
         "num": 153,
-        "word": "distribute",
+        "word": "distribute – distributed – distributed",
         "pos": "v.",
         "meaning": "แจกจ่าย \/ กระจาย",
         "category": "คำกริยา (Verb)",
@@ -2755,7 +2755,7 @@
     },
     {
         "num": 154,
-        "word": "edit",
+        "word": "edit – edited – edited",
         "pos": "v.",
         "meaning": "แก้ไข \/ ตัดต่อ",
         "category": "คำกริยา (Verb)",
@@ -2773,7 +2773,7 @@
     },
     {
         "num": 155,
-        "word": "emphasize",
+        "word": "emphasize – emphasized – emphasized",
         "pos": "v.",
         "meaning": "เน้น \/ ให้ความสำคัญ",
         "category": "คำกริยา (Verb)",
@@ -2791,7 +2791,7 @@
     },
     {
         "num": 156,
-        "word": "enable",
+        "word": "enable – enabled – enabled",
         "pos": "v.",
         "meaning": "ทำให้สามารถ",
         "category": "คำกริยา (Verb)",
@@ -2809,7 +2809,7 @@
     },
     {
         "num": 157,
-        "word": "encourage",
+        "word": "encourage – encouraged – encouraged",
         "pos": "v.",
         "meaning": "ส่งเสริม \/ ให้กำลังใจ",
         "category": "คำกริยา (Verb)",
@@ -2827,7 +2827,7 @@
     },
     {
         "num": 158,
-        "word": "engage",
+        "word": "engage – engaged – engaged",
         "pos": "v.",
         "meaning": "มีส่วนร่วม \/ ว่าจ้าง",
         "category": "คำกริยา (Verb)",
@@ -2845,7 +2845,7 @@
     },
     {
         "num": 159,
-        "word": "ensure",
+        "word": "ensure – ensured – ensured",
         "pos": "v.",
         "meaning": "ทำให้มั่นใจ",
         "category": "คำกริยา (Verb)",
@@ -2863,7 +2863,7 @@
     },
     {
         "num": 160,
-        "word": "enter",
+        "word": "enter – entered – entered",
         "pos": "v.",
         "meaning": "เข้าร่วม \/ กรอก",
         "category": "คำกริยา (Verb)",
@@ -2881,7 +2881,7 @@
     },
     {
         "num": 161,
-        "word": "establish",
+        "word": "establish – established – established",
         "pos": "v.",
         "meaning": "ก่อตั้ง \/ สร้าง",
         "category": "คำกริยา (Verb)",
@@ -2899,7 +2899,7 @@
     },
     {
         "num": 162,
-        "word": "estimate",
+        "word": "estimate – estimated – estimated",
         "pos": "v.",
         "meaning": "ประเมิน",
         "category": "คำกริยา (Verb)",
@@ -2917,7 +2917,7 @@
     },
     {
         "num": 163,
-        "word": "evaluate",
+        "word": "evaluate – evaluated – evaluated",
         "pos": "v.",
         "meaning": "ประเมินผล",
         "category": "คำกริยา (Verb)",
@@ -2935,7 +2935,7 @@
     },
     {
         "num": 164,
-        "word": "exceed",
+        "word": "exceed – exceeded – exceeded",
         "pos": "v.",
         "meaning": "เกิน \/ ลํ้า",
         "category": "คำกริยา (Verb)",
@@ -2953,7 +2953,7 @@
     },
     {
         "num": 165,
-        "word": "exclude",
+        "word": "exclude – excluded – excluded",
         "pos": "v.",
         "meaning": "แยกออก \/ ตัดออก",
         "category": "คำกริยา (Verb)",
@@ -2971,7 +2971,7 @@
     },
     {
         "num": 166,
-        "word": "excuse",
+        "word": "excuse – excused – excused",
         "pos": "v.",
         "meaning": "ขอโทษ \/ ขออนุญาต",
         "category": "คำกริยา (Verb)",
@@ -2989,7 +2989,7 @@
     },
     {
         "num": 167,
-        "word": "expand",
+        "word": "expand – expanded – expanded",
         "pos": "v.",
         "meaning": "ขยาย",
         "category": "คำกริยา (Verb)",
@@ -3007,7 +3007,7 @@
     },
     {
         "num": 168,
-        "word": "expect",
+        "word": "expect – expected – expected",
         "pos": "v.",
         "meaning": "คาดหวัง \/ คาดว่า",
         "category": "คำกริยา (Verb)",
@@ -3025,7 +3025,7 @@
     },
     {
         "num": 169,
-        "word": "explain",
+        "word": "explain – explained – explained",
         "pos": "v.",
         "meaning": "อธิบาย",
         "category": "คำกริยา (Verb)",
@@ -3043,7 +3043,7 @@
     },
     {
         "num": 170,
-        "word": "express",
+        "word": "express – expressed – expressed",
         "pos": "v.",
         "meaning": "แสดงความคิด \/ แสดงความรู้สึก",
         "category": "คำกริยา (Verb)",
@@ -3061,7 +3061,7 @@
     },
     {
         "num": 171,
-        "word": "file",
+        "word": "file – filed – filed",
         "pos": "v.",
         "meaning": "ยื่น \/ จัดเก็บเอกสาร",
         "category": "คำกริยา (Verb)",
@@ -3079,7 +3079,7 @@
     },
     {
         "num": 172,
-        "word": "fill",
+        "word": "fill – filled – filled",
         "pos": "v.",
         "meaning": "กรอก \/ เติม",
         "category": "คำกริยา (Verb)",
@@ -3097,7 +3097,7 @@
     },
     {
         "num": 173,
-        "word": "focus",
+        "word": "focus – focused – focused",
         "pos": "v.",
         "meaning": "มุ่งเน้น",
         "category": "คำกริยา (Verb)",
@@ -3115,7 +3115,7 @@
     },
     {
         "num": 174,
-        "word": "follow",
+        "word": "follow – followed – followed",
         "pos": "v.",
         "meaning": "ปฏิบัติตาม \/ ติดตาม",
         "category": "คำกริยา (Verb)",
@@ -3133,7 +3133,7 @@
     },
     {
         "num": 175,
-        "word": "form",
+        "word": "form – formed – formed",
         "pos": "v.",
         "meaning": "ก่อรูป \/ จัดตั้ง",
         "category": "คำกริยา (Verb)",
@@ -3151,7 +3151,7 @@
     },
     {
         "num": 176,
-        "word": "gain",
+        "word": "gain – gained – gained",
         "pos": "v.",
         "meaning": "ได้รับ",
         "category": "คำกริยา (Verb)",
@@ -3169,7 +3169,7 @@
     },
     {
         "num": 177,
-        "word": "gather",
+        "word": "gather – gathered – gathered",
         "pos": "v.",
         "meaning": "รวบรวม",
         "category": "คำกริยา (Verb)",
@@ -3187,7 +3187,7 @@
     },
     {
         "num": 178,
-        "word": "generate",
+        "word": "generate – generated – generated",
         "pos": "v.",
         "meaning": "สร้าง \/ ก่อให้เกิด",
         "category": "คำกริยา (Verb)",
@@ -3205,7 +3205,7 @@
     },
     {
         "num": 179,
-        "word": "handle",
+        "word": "handle – handled – handled",
         "pos": "v.",
         "meaning": "จัดการ",
         "category": "คำกริยา (Verb)",
@@ -3223,7 +3223,7 @@
     },
     {
         "num": 180,
-        "word": "identify",
+        "word": "identify – identified – identified",
         "pos": "v.",
         "meaning": "ระบุ \/ ชี้ตัว",
         "category": "คำกริยา (Verb)",
@@ -3241,7 +3241,7 @@
     },
     {
         "num": 181,
-        "word": "implement",
+        "word": "implement – implemented – implemented",
         "pos": "v.",
         "meaning": "ดำเนินการ \/ นำไปใช้",
         "category": "คำกริยา (Verb)",
@@ -3259,7 +3259,7 @@
     },
     {
         "num": 182,
-        "word": "improve",
+        "word": "improve – improved – improved",
         "pos": "v.",
         "meaning": "ปรับปรุง \/ พัฒนา",
         "category": "คำกริยา (Verb)",
@@ -3277,7 +3277,7 @@
     },
     {
         "num": 183,
-        "word": "include",
+        "word": "include – included – included",
         "pos": "v.",
         "meaning": "รวม",
         "category": "คำกริยา (Verb)",
@@ -3295,7 +3295,7 @@
     },
     {
         "num": 184,
-        "word": "inform",
+        "word": "inform – informed – informed",
         "pos": "v.",
         "meaning": "แจ้ง \/ ให้ข้อมูล",
         "category": "คำกริยา (Verb)",
@@ -3313,7 +3313,7 @@
     },
     {
         "num": 185,
-        "word": "install",
+        "word": "install – installed – installed",
         "pos": "v.",
         "meaning": "ติดตั้ง",
         "category": "คำกริยา (Verb)",
@@ -3331,7 +3331,7 @@
     },
     {
         "num": 186,
-        "word": "instruct",
+        "word": "instruct – instructed – instructed",
         "pos": "v.",
         "meaning": "สั่ง \/ ให้คำแนะนำ",
         "category": "คำกริยา (Verb)",
@@ -3349,7 +3349,7 @@
     },
     {
         "num": 187,
-        "word": "intend",
+        "word": "intend – intended – intended",
         "pos": "v.",
         "meaning": "ตั้งใจ",
         "category": "คำกริยา (Verb)",
@@ -3367,7 +3367,7 @@
     },
     {
         "num": 188,
-        "word": "interview",
+        "word": "interview – interviewed – interviewed",
         "pos": "v.",
         "meaning": "สัมภาษณ์",
         "category": "คำกริยา (Verb)",
@@ -3385,7 +3385,7 @@
     },
     {
         "num": 189,
-        "word": "introduce",
+        "word": "introduce – introduced – introduced",
         "pos": "v.",
         "meaning": "แนะนำ \/ เปิดตัว",
         "category": "คำกริยา (Verb)",
@@ -3403,7 +3403,7 @@
     },
     {
         "num": 190,
-        "word": "investigate",
+        "word": "investigate – investigated – investigated",
         "pos": "v.",
         "meaning": "สืบสวน \/ ตรวจสอบ",
         "category": "คำกริยา (Verb)",
@@ -3421,7 +3421,7 @@
     },
     {
         "num": 191,
-        "word": "invite",
+        "word": "invite – invited – invited",
         "pos": "v.",
         "meaning": "เชิญ",
         "category": "คำกริยา (Verb)",
@@ -3439,7 +3439,7 @@
     },
     {
         "num": 192,
-        "word": "join",
+        "word": "join – joined – joined",
         "pos": "v.",
         "meaning": "เข้าร่วม \/ ร่วมกับ",
         "category": "คำกริยา (Verb)",
@@ -3457,7 +3457,7 @@
     },
     {
         "num": 193,
-        "word": "justify",
+        "word": "justify – justified – justified",
         "pos": "v.",
         "meaning": "ให้เหตุผล \/ แสดงความชอบธรรม",
         "category": "คำกริยา (Verb)",
@@ -3475,7 +3475,7 @@
     },
     {
         "num": 194,
-        "word": "lead",
+        "word": "lead – led – led",
         "pos": "v.",
         "meaning": "นำ \/ เป็นผู้นำ",
         "category": "คำกริยา (Verb)",
@@ -3493,7 +3493,7 @@
     },
     {
         "num": 195,
-        "word": "limit",
+        "word": "limit – limited – limited",
         "pos": "v.",
         "meaning": "จำกัด",
         "category": "คำกริยา (Verb)",
@@ -3511,7 +3511,7 @@
     },
     {
         "num": 196,
-        "word": "manage",
+        "word": "manage – managed – managed",
         "pos": "v.",
         "meaning": "จัดการ \/ บริหาร",
         "category": "คำกริยา (Verb)",
@@ -3529,7 +3529,7 @@
     },
     {
         "num": 197,
-        "word": "measure",
+        "word": "measure – measured – measured",
         "pos": "v.",
         "meaning": "วัด \/ ประเมิน",
         "category": "คำกริยา (Verb)",
@@ -3547,7 +3547,7 @@
     },
     {
         "num": 198,
-        "word": "monitor",
+        "word": "monitor – monitored – monitored",
         "pos": "v.",
         "meaning": "เฝ้าติดตาม \/ ตรวจสอบ",
         "category": "คำกริยา (Verb)",
@@ -3565,7 +3565,7 @@
     },
     {
         "num": 199,
-        "word": "notify",
+        "word": "notify – notified – notified",
         "pos": "v.",
         "meaning": "แจ้ง \/ ประกาศ",
         "category": "คำกริยา (Verb)",
@@ -3583,7 +3583,7 @@
     },
     {
         "num": 200,
-        "word": "observe",
+        "word": "observe – observed – observed",
         "pos": "v.",
         "meaning": "สังเกต \/ เฝ้าดู",
         "category": "คำกริยา (Verb)",

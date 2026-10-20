@@ -95,12 +95,29 @@ if ($method === 'GET') {
     $stmt->execute($params);
     $cards = $stmt->fetchAll();
 
-    // Type casting
+    // Type casting and verb fallback
     foreach ($cards as &$card) {
         $card['id'] = (int)$card['id'];
         $card['num'] = (int)$card['num'];
         $card['review_count'] = (int)$card['review_count'];
+
+        if (($card['category'] ?? '') === 'คำกริยา (Verb)') {
+            if (empty($card['v1']) || empty($card['v2']) || empty($card['v3'])) {
+                if (strpos($card['word'], '–') !== false || strpos($card['word'], '-') !== false) {
+                    $parts = array_map('trim', preg_split('/[–\-]/u', $card['word']));
+                    if (count($parts) >= 3) {
+                        $card['v1'] = $parts[0];
+                        $card['v2'] = $parts[1];
+                        $card['v3'] = $parts[2];
+                    }
+                }
+            }
+            if (!empty($card['v1']) && !empty($card['v2']) && !empty($card['v3']) && (strpos($card['word'], '–') === false && strpos($card['word'], '-') === false)) {
+                $card['word'] = "{$card['v1']} – {$card['v2']} – {$card['v3']}";
+            }
+        }
     }
+    unset($card);
 
     echo json_encode(['success' => true, 'total' => count($cards), 'cards' => $cards], JSON_UNESCAPED_UNICODE);
     exit;
@@ -142,6 +159,12 @@ if ($method === 'POST') {
     $synonyms = trim($input['synonyms'] ?? '');
     $antonyms = trim($input['antonyms'] ?? '');
     $memory_hook = trim($input['memory_hook'] ?? '');
+
+    if ($category === 'คำกริยา (Verb)' && !empty($v1) && !empty($v2) && !empty($v3)) {
+        if (strpos($word, '–') === false && strpos($word, '-') === false) {
+            $word = "{$v1} – {$v2} – {$v3}";
+        }
+    }
 
     if (empty($word) || empty($meaning)) {
         http_response_code(400);

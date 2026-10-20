@@ -122,13 +122,48 @@ function initSchemaAndData(PDO $pdo) {
 
     // Ensure v1, v2, v3 columns exist if table was created previously without them
     try {
-        $colCheck = $pdo->query("SHOW COLUMNS FROM `flashcards` LIKE 'v1'")->fetch();
-        if (!$colCheck) {
+        $existingCols = [];
+        $colStmt = $pdo->query("SHOW COLUMNS FROM `flashcards`");
+        while ($colRow = $colStmt->fetch()) {
+            $existingCols[] = strtolower($colRow['Field']);
+        }
+        if (!in_array('v1', $existingCols)) {
             $pdo->exec("ALTER TABLE `flashcards` ADD COLUMN `v1` VARCHAR(100) DEFAULT NULL AFTER `pos`");
+        }
+        if (!in_array('v2', $existingCols)) {
             $pdo->exec("ALTER TABLE `flashcards` ADD COLUMN `v2` VARCHAR(100) DEFAULT NULL AFTER `v1`");
+        }
+        if (!in_array('v3', $existingCols)) {
             $pdo->exec("ALTER TABLE `flashcards` ADD COLUMN `v3` VARCHAR(100) DEFAULT NULL AFTER `v2`");
         }
     } catch (Exception $eCol) {}
+
+    // Auto-update verbs to 3 forms if database has older single-word records
+    try {
+        $verbCheck = (int)$pdo->query("SELECT COUNT(*) FROM `flashcards` WHERE `category` = 'คำกริยา (Verb)' AND (`v1` IS NULL OR `v1` = '' OR `word` NOT LIKE '%–%')")->fetchColumn();
+        if ($verbCheck > 0) {
+            $jsonPath = __DIR__ . '/../data/kru_whan_500_flashcards.json';
+            if (file_exists($jsonPath)) {
+                $cards = json_decode(file_get_contents($jsonPath), true);
+                if (is_array($cards)) {
+                    $upStmt = $pdo->prepare("UPDATE `flashcards` SET `word` = :word, `v1` = :v1, `v2` = :v2, `v3` = :v3 WHERE `num` = :num");
+                    $pdo->beginTransaction();
+                    foreach ($cards as $c) {
+                        if (($c['category'] ?? '') === 'คำกริยา (Verb)' && !empty($c['v1'])) {
+                            $upStmt->execute([
+                                ':word' => $c['word'],
+                                ':v1' => $c['v1'],
+                                ':v2' => $c['v2'],
+                                ':v3' => $c['v3'],
+                                ':num' => $c['num']
+                            ]);
+                        }
+                    }
+                    $pdo->commit();
+                }
+            }
+        }
+    } catch (Exception $eVerbs) {}
 
     // 2. Users table
     $pdo->exec("CREATE TABLE IF NOT EXISTS `users` (

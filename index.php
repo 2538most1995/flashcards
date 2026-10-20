@@ -42,6 +42,26 @@ try {
     $initialCards = $stmtCards->fetchAll();
     $totalCards = count($initialCards);
 
+    // Self-healing fallback for verbs in PHP
+    foreach ($initialCards as &$card) {
+        if (($card['category'] ?? '') === 'คำกริยา (Verb)') {
+            if (empty($card['v1']) || empty($card['v2']) || empty($card['v3'])) {
+                if (strpos($card['word'], '–') !== false || strpos($card['word'], '-') !== false) {
+                    $parts = array_map('trim', preg_split('/[–\-]/u', $card['word']));
+                    if (count($parts) >= 3) {
+                        $card['v1'] = $parts[0];
+                        $card['v2'] = $parts[1];
+                        $card['v3'] = $parts[2];
+                    }
+                }
+            }
+            if (!empty($card['v1']) && !empty($card['v2']) && !empty($card['v3']) && (strpos($card['word'], '–') === false && strpos($card['word'], '-') === false)) {
+                $card['word'] = "{$card['v1']} – {$card['v2']} – {$card['v3']}";
+            }
+        }
+    }
+    unset($card);
+
     // Fetch mastery
     $stmtProg = $pdo->prepare("SELECT card_num, status FROM card_progress WHERE user_id = ?");
     $stmtProg->execute([$userId]);
@@ -696,6 +716,45 @@ try {
       "คำกำกับนาม (Determiner)"
     ];
 
+    const verb3FormsMap = {"101": ["accept", "accepted", "accepted"], "102": ["achieve", "achieved", "achieved"], "103": ["acknowledge", "acknowledged", "acknowledged"], "104": ["acquire", "acquired", "acquired"], "105": ["act", "acted", "acted"], "106": ["adjust", "adjusted", "adjusted"], "107": ["administer", "administered", "administered"], "108": ["advertise", "advertised", "advertised"], "109": ["advise", "advised", "advised"], "110": ["allocate", "allocated", "allocated"], "111": ["analyze", "analyzed", "analyzed"], "112": ["answer", "answered", "answered"], "113": ["apply", "applied", "applied"], "114": ["appoint", "appointed", "appointed"], "115": ["approve", "approved", "approved"], "116": ["arrange", "arranged", "arranged"], "117": ["assist", "assisted", "assisted"], "118": ["assume", "assumed", "assumed"], "119": ["attend", "attended", "attended"], "120": ["authorize", "authorized", "authorized"], "121": ["avoid", "avoided", "avoided"], "122": ["balance", "balanced", "balanced"], "123": ["behave", "behaved", "behaved"], "124": ["believe", "believed", "believed"], "125": ["build", "built", "built"], "126": ["calculate", "calculated", "calculated"], "127": ["cancel", "canceled", "canceled"], "128": ["clarify", "clarified", "clarified"], "129": ["collaborate", "collaborated", "collaborated"], "130": ["collect", "collected", "collected"], "131": ["communicate", "communicated", "communicated"], "132": ["compare", "compared", "compared"], "133": ["complete", "completed", "completed"], "134": ["confirm", "confirmed", "confirmed"], "135": ["connect", "connected", "connected"], "136": ["consider", "considered", "considered"], "137": ["construct", "constructed", "constructed"], "138": ["contact", "contacted", "contacted"], "139": ["contribute", "contributed", "contributed"], "140": ["control", "controlled", "controlled"], "141": ["cooperate", "cooperated", "cooperated"], "142": ["correct", "corrected", "corrected"], "143": ["create", "created", "created"], "144": ["decide", "decided", "decided"], "145": ["decline", "declined", "declined"], "146": ["deliver", "delivered", "delivered"], "147": ["demonstrate", "demonstrated", "demonstrated"], "148": ["depend", "depended", "depended"], "149": ["describe", "described", "described"], "150": ["design", "designed", "designed"], "151": ["develop", "developed", "developed"], "152": ["discuss", "discussed", "discussed"], "153": ["distribute", "distributed", "distributed"], "154": ["edit", "edited", "edited"], "155": ["emphasize", "emphasized", "emphasized"], "156": ["enable", "enabled", "enabled"], "157": ["encourage", "encouraged", "encouraged"], "158": ["engage", "engaged", "engaged"], "159": ["ensure", "ensured", "ensured"], "160": ["enter", "entered", "entered"], "161": ["establish", "established", "established"], "162": ["estimate", "estimated", "estimated"], "163": ["evaluate", "evaluated", "evaluated"], "164": ["exceed", "exceeded", "exceeded"], "165": ["exclude", "excluded", "excluded"], "166": ["excuse", "excused", "excused"], "167": ["expand", "expanded", "expanded"], "168": ["expect", "expected", "expected"], "169": ["explain", "explained", "explained"], "170": ["express", "expressed", "expressed"], "171": ["file", "filed", "filed"], "172": ["fill", "filled", "filled"], "173": ["focus", "focused", "focused"], "174": ["follow", "followed", "followed"], "175": ["form", "formed", "formed"], "176": ["gain", "gained", "gained"], "177": ["gather", "gathered", "gathered"], "178": ["generate", "generated", "generated"], "179": ["handle", "handled", "handled"], "180": ["identify", "identified", "identified"], "181": ["implement", "implemented", "implemented"], "182": ["improve", "improved", "improved"], "183": ["include", "included", "included"], "184": ["inform", "informed", "informed"], "185": ["install", "installed", "installed"], "186": ["instruct", "instructed", "instructed"], "187": ["intend", "intended", "intended"], "188": ["interview", "interviewed", "interviewed"], "189": ["introduce", "introduced", "introduced"], "190": ["investigate", "investigated", "investigated"], "191": ["invite", "invited", "invited"], "192": ["join", "joined", "joined"], "193": ["justify", "justified", "justified"], "194": ["lead", "led", "led"], "195": ["limit", "limited", "limited"], "196": ["manage", "managed", "managed"], "197": ["measure", "measured", "measured"], "198": ["monitor", "monitored", "monitored"], "199": ["notify", "notified", "notified"], "200": ["observe", "observed", "observed"]};
+
+    function getCardVerbForms(c) {
+      if (!c) return { v1: "", v2: "", v3: "", hasForms: false };
+      
+      let v1 = (c.v1 || "").trim();
+      let v2 = (c.v2 || "").trim();
+      let v3 = (c.v3 || "").trim();
+
+      if (v1 && v2 && v3) {
+        return { v1: v1, v2: v2, v3: v3, hasForms: true };
+      }
+
+      if (c.word && (c.word.includes("–") || c.word.includes("-"))) {
+        const parts = c.word.split(/[–\-]/).map(function(s) { return s.trim(); }).filter(Boolean);
+        if (parts.length >= 3) {
+          return { v1: parts[0], v2: parts[1], v3: parts[2], hasForms: true };
+        }
+      }
+
+      const numKey = String(c.num || "");
+      if (numKey && verb3FormsMap[numKey]) {
+        const mv = verb3FormsMap[numKey];
+        return { v1: mv[0], v2: mv[1], v3: mv[2], hasForms: true };
+      }
+
+      if (c.category === "คำกริยา (Verb)" || (c.pos && c.pos.toLowerCase().includes("v"))) {
+        const cleanWord = (c.word || "").replace(/[^a-zA-Z]/g, '').toLowerCase();
+        for (const k in verb3FormsMap) {
+          if (verb3FormsMap[k][0].toLowerCase() === cleanWord) {
+            const mv = verb3FormsMap[k];
+            return { v1: mv[0], v2: mv[1], v3: mv[2], hasForms: true };
+          }
+        }
+      }
+
+      return { v1: "", v2: "", v3: "", hasForms: false };
+    }
+
     function init() {
       renderCategoryPills();
       filterCards();
@@ -846,10 +905,11 @@ try {
 
       if (searchQuery) {
         list = list.filter(function(c) {
+          const vf = getCardVerbForms(c);
           return (c.word && c.word.toLowerCase().includes(searchQuery)) ||
-                 (c.v1 && c.v1.toLowerCase().includes(searchQuery)) ||
-                 (c.v2 && c.v2.toLowerCase().includes(searchQuery)) ||
-                 (c.v3 && c.v3.toLowerCase().includes(searchQuery)) ||
+                 (vf.v1 && vf.v1.toLowerCase().includes(searchQuery)) ||
+                 (vf.v2 && vf.v2.toLowerCase().includes(searchQuery)) ||
+                 (vf.v3 && vf.v3.toLowerCase().includes(searchQuery)) ||
                  (c.meaning && c.meaning.toLowerCase().includes(searchQuery)) ||
                  (c.reading && c.reading.toLowerCase().includes(searchQuery)) ||
                  (c.example && c.example.toLowerCase().includes(searchQuery)) ||
@@ -888,7 +948,11 @@ try {
 
       const c = cards[currentIndex];
       const st = mastery[c.num] || "unseen";
-      const isVerbWithThreeForms = (c.v1 && c.v2 && c.v3);
+      const vForms = getCardVerbForms(c);
+      const isVerbWithThreeForms = vForms.hasForms;
+      const v1 = vForms.v1;
+      const v2 = vForms.v2;
+      const v3 = vForms.v3;
 
       // Front elements
       document.getElementById("front-cat-badge").innerText = c.category;
@@ -901,16 +965,16 @@ try {
       const backVerbBox = document.getElementById("back-verb-box");
 
       if (isVerbWithThreeForms) {
-        frontWordEl.innerHTML = `<span class="text-blue-700">${c.v1}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${c.v2}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${c.v3}</span>`;
+        frontWordEl.innerHTML = `<span class="text-blue-700">${v1}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${v2}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${v3}</span>`;
         frontVerbBox.classList.remove("hidden");
-        document.getElementById("front-v1").innerText = c.v1;
-        document.getElementById("front-v2").innerText = c.v2;
-        document.getElementById("front-v3").innerText = c.v3;
+        document.getElementById("front-v1").innerText = v1;
+        document.getElementById("front-v2").innerText = v2;
+        document.getElementById("front-v3").innerText = v3;
 
         backVerbBox.classList.remove("hidden");
-        document.getElementById("back-v1").innerText = c.v1;
-        document.getElementById("back-v2").innerText = c.v2;
-        document.getElementById("back-v3").innerText = c.v3;
+        document.getElementById("back-v1").innerText = v1;
+        document.getElementById("back-v2").innerText = v2;
+        document.getElementById("back-v3").innerText = v3;
       } else {
         frontWordEl.innerText = c.word;
         frontVerbBox.classList.add("hidden");
@@ -952,14 +1016,14 @@ try {
       
       const backWordEl = document.getElementById("back-word");
       if (isVerbWithThreeForms) {
-        backWordEl.innerHTML = `<span class="text-emerald-700">${c.v1}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${c.v2}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${c.v3}</span>`;
+        backWordEl.innerHTML = `<span class="text-emerald-700">${v1}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${v2}</span> <span class="text-slate-300 font-normal">–</span> <span class="text-slate-800">${v3}</span>`;
       } else {
         backWordEl.innerText = c.word;
       }
 
       document.getElementById("back-reading").innerText = "(" + (c.pos ? c.pos + " " : "") + (c.reading || "") + ")";
       document.getElementById("back-meaning").innerText = c.meaning;
-      document.getElementById("back-example").innerHTML = "<b>ประโยคเต็ม:</b> " + highlightWord(c.example, c.word);
+      document.getElementById("back-example").innerHTML = "<b>ประโยคเต็ม:</b> " + highlightWord(c.example, c.word, v1);
       document.getElementById("back-example-th").innerHTML = "<b>แปล:</b> " + (c.example_th || "—");
 
       // Synonyms & Antonyms
@@ -980,11 +1044,15 @@ try {
       if (jumpEl) jumpEl.value = c.num;
     }
 
-    function highlightWord(example, word) {
-      if (!example || !word) return example || "";
-      const clean = word.replace(/xx/, '').replace(/[…\.]/g, '').replace(/[e]$/, '').trim();
+    function highlightWord(example, word, baseWord) {
+      if (!example) return "";
+      let target = (baseWord || word || "").replace(/xx/, '').replace(/[…\.]/g, '').trim();
+      if (target.includes("–") || target.includes("-")) {
+        target = target.split(/[–\-]/)[0].trim();
+      }
+      target = target.replace(/[e]$/, '').trim();
       try {
-        const regex = new RegExp("(\\b" + clean + "\\w*\\b)", "gi");
+        const regex = new RegExp("(\\b" + target + "\\w*\\b)", "gi");
         return example.replace(regex, '<span class="text-blue-600 font-bold underline">$1</span>');
       } catch (e) {
         return example;
@@ -1184,55 +1252,55 @@ try {
       });
 
       // If card has 3 verb forms (v1, v2, v3), read all 3 forms in sequence
-      if (c.v1 && c.v2 && c.v3) {
-        speakThreeWords(c.v1, c.v2, c.v3);
+      const vForms = getCardVerbForms(c);
+      if (vForms.hasForms) {
+        speakThreeWords(vForms.v1, vForms.v2, vForms.v3);
         return;
       }
 
       // Normal single word
-      const wordToSpeak = (c.word || "").replace(/xx/, '').replace(/[…\.]/g, '').trim();
+      let wordToSpeak = (c.word || "").replace(/xx/, '').replace(/[…\.]/g, '').trim();
+      if (wordToSpeak.includes("–") || wordToSpeak.includes("-")) {
+        wordToSpeak = wordToSpeak.split(/[–\-]/)[0].trim();
+      }
       playSingleAudio(wordToSpeak);
     }
 
-    // Read 3 verb forms sequentially with natural spacing
+    // Read 3 verb forms sequentially with natural spacing and distinct articulation
     function speakThreeWords(w1, w2, w3) {
-      if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-        return;
-      }
-      window.speechSynthesis.cancel();
-      const words = [w1, w2, w3];
-      let i = 0;
+      const clean1 = (w1 || "").replace(/[^a-zA-Z\s]/g, '').trim();
+      const clean2 = (w2 || "").replace(/[^a-zA-Z\s]/g, '').trim();
+      const clean3 = (w3 || "").replace(/[^a-zA-Z\s]/g, '').trim();
 
-      function playNext() {
-        if (i >= words.length) return;
-        const currentWord = words[i++];
-        const SpeechClass = window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
-        if (!SpeechClass) return;
-
-        const u = new SpeechClass(currentWord);
-        u.lang = "en-US";
-        u.rate = 0.82;
-
+      if (typeof window !== "undefined" && ("speechSynthesis" in window)) {
         try {
-          const voices = window.speechSynthesis.getVoices();
-          const enVoice = voices.find(function(v) {
-            return (v.lang === "en-US" || v.lang.startsWith("en")) &&
-                   (v.name.includes("Google") || v.name.includes("Samantha") || v.name.includes("Siri") || v.default);
-          });
-          if (enVoice) u.voice = enVoice;
-        } catch(e) {}
+          window.speechSynthesis.cancel();
+          const SpeechClass = window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
+          if (SpeechClass) {
+            // Using period boundaries creates natural, distinct pauses for V.1 -> V.2 -> V.3
+            const phrase = clean1 + ". " + clean2 + ". " + clean3 + ".";
+            const u = new SpeechClass(phrase);
+            u.lang = "en-US";
+            u.rate = 0.78;
 
-        u.onend = function() {
-          setTimeout(playNext, 260); // Clean pause between V.1 -> V.2 -> V.3
-        };
-        u.onerror = function() {
-          setTimeout(playNext, 200);
-        };
+            const voices = window.speechSynthesis.getVoices();
+            if (voices && voices.length > 0) {
+              const enVoice = voices.find(function(v) {
+                return (v.lang === "en-US" || v.lang.startsWith("en")) &&
+                       (v.name.includes("Google") || v.name.includes("Samantha") || v.name.includes("Siri") || v.name.includes("Daniel") || v.default);
+              });
+              if (enVoice) u.voice = enVoice;
+            }
 
-        window.speechSynthesis.speak(u);
+            window.speechSynthesis.speak(u);
+            return;
+          }
+        } catch (e) {
+          console.warn("TTS speakThreeWords error:", e);
+        }
       }
 
-      playNext();
+      playSingleAudio(clean1);
     }
 
     // Pronounce a single specific form when tapped
@@ -1243,7 +1311,20 @@ try {
       }
       if (cards.length === 0) return;
       const c = cards[currentIndex];
-      const word = c[formKey] || c.word;
+      const vForms = getCardVerbForms(c);
+      let word = vForms[formKey] || c[formKey] || c.word;
+      if (word && (word.includes("–") || word.includes("-"))) {
+        word = word.split(/[–\-]/)[0].trim();
+      }
+
+      if (event && event.currentTarget) {
+        const el = event.currentTarget;
+        el.classList.add("ring-2", "ring-blue-400", "scale-105");
+        setTimeout(function() {
+          el.classList.remove("ring-2", "ring-blue-400", "scale-105");
+        }, 350);
+      }
+
       playSingleAudio(word);
     }
 
@@ -1310,12 +1391,13 @@ try {
       if (cardToEdit) {
         title.innerText = "✏️ แก้ไขคำศัพท์ #" + cardToEdit.num + " ใน MySQL";
         delBtn.classList.remove("hidden");
+        const vForms = getCardVerbForms(cardToEdit);
         document.getElementById("form-num").value = cardToEdit.num;
         document.getElementById("form-word").value = cardToEdit.word || "";
         document.getElementById("form-pos").value = cardToEdit.pos || "";
-        document.getElementById("form-v1").value = cardToEdit.v1 || "";
-        document.getElementById("form-v2").value = cardToEdit.v2 || "";
-        document.getElementById("form-v3").value = cardToEdit.v3 || "";
+        document.getElementById("form-v1").value = vForms.v1 || cardToEdit.v1 || "";
+        document.getElementById("form-v2").value = vForms.v2 || cardToEdit.v2 || "";
+        document.getElementById("form-v3").value = vForms.v3 || cardToEdit.v3 || "";
         document.getElementById("form-meaning").value = cardToEdit.meaning || "";
         document.getElementById("form-category").value = cardToEdit.category || "คำนาม (Noun)";
         document.getElementById("form-reading").value = cardToEdit.reading || "";
