@@ -138,29 +138,29 @@ function initSchemaAndData(PDO $pdo) {
         }
     } catch (Exception $eCol) {}
 
-    // Auto-update verbs to 3 forms if database has older single-word records
+    // Auto-revert verbs back to single-word if database has 3-form records with dashes
     try {
-        $verbCheck = (int)$pdo->query("SELECT COUNT(*) FROM `flashcards` WHERE `category` = 'คำกริยา (Verb)' AND (`v1` IS NULL OR `v1` = '' OR `word` NOT LIKE '%–%')")->fetchColumn();
+        $verbCheck = (int)$pdo->query("SELECT COUNT(*) FROM `flashcards` WHERE `category` = 'คำกริยา (Verb)' AND (`word` LIKE '%–%' OR `word` LIKE '%-%')")->fetchColumn();
         if ($verbCheck > 0) {
             $jsonPath = __DIR__ . '/../data/kru_whan_500_flashcards.json';
             if (file_exists($jsonPath)) {
                 $cards = json_decode(file_get_contents($jsonPath), true);
                 if (is_array($cards)) {
-                    $upStmt = $pdo->prepare("UPDATE `flashcards` SET `word` = :word, `v1` = :v1, `v2` = :v2, `v3` = :v3 WHERE `num` = :num");
+                    $upStmt = $pdo->prepare("UPDATE `flashcards` SET `word` = :word WHERE `num` = :num");
                     $pdo->beginTransaction();
                     foreach ($cards as $c) {
-                        if (($c['category'] ?? '') === 'คำกริยา (Verb)' && !empty($c['v1'])) {
+                        if (($c['category'] ?? '') === 'คำกริยา (Verb)') {
+                            $singleWord = trim(preg_split('/[–\-]/u', $c['word'])[0]);
                             $upStmt->execute([
-                                ':word' => $c['word'],
-                                ':v1' => $c['v1'],
-                                ':v2' => $c['v2'],
-                                ':v3' => $c['v3'],
+                                ':word' => $singleWord,
                                 ':num' => $c['num']
                             ]);
                         }
                     }
                     $pdo->commit();
                 }
+            } else {
+                $pdo->exec("UPDATE `flashcards` SET `word` = TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(`word`, '–', 1), '-', 1)) WHERE `category` = 'คำกริยา (Verb)' AND (`word` LIKE '%–%' OR `word` LIKE '%-%')");
             }
         }
     } catch (Exception $eVerbs) {}

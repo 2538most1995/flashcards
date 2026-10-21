@@ -42,21 +42,12 @@ try {
     $initialCards = $stmtCards->fetchAll();
     $totalCards = count($initialCards);
 
-    // Self-healing fallback for verbs in PHP
+    // Ensure verbs are clean single words
     foreach ($initialCards as &$card) {
         if (($card['category'] ?? '') === 'คำกริยา (Verb)') {
-            if (empty($card['v1']) || empty($card['v2']) || empty($card['v3'])) {
-                if (strpos($card['word'], '–') !== false || strpos($card['word'], '-') !== false) {
-                    $parts = array_map('trim', preg_split('/[–\-]/u', $card['word']));
-                    if (count($parts) >= 3) {
-                        $card['v1'] = $parts[0];
-                        $card['v2'] = $parts[1];
-                        $card['v3'] = $parts[2];
-                    }
-                }
-            }
-            if (!empty($card['v1']) && !empty($card['v2']) && !empty($card['v3']) && (strpos($card['word'], '–') === false && strpos($card['word'], '-') === false)) {
-                $card['word'] = "{$card['v1']} – {$card['v2']} – {$card['v3']}";
+            if (strpos($card['word'], '–') !== false || strpos($card['word'], '-') !== false) {
+                $parts = array_map('trim', preg_split('/[–\-]/u', $card['word']));
+                $card['word'] = $parts[0];
             }
         }
     }
@@ -175,11 +166,6 @@ try {
       font-size: clamp(1.85rem, 6vw + 0.2rem, 3.1rem);
       line-height: 1.25;
       letter-spacing: -0.02em;
-    }
-    .fluid-word-verb {
-      font-size: clamp(1.12rem, 3.8vw + 0.05rem, 1.55rem);
-      line-height: 1.35;
-      letter-spacing: -0.01em;
     }
     .fluid-reading {
       font-size: clamp(0.95rem, 3.2vw + 0.05rem, 1.25rem);
@@ -348,25 +334,11 @@ try {
                 <h2 class="fluid-word font-extrabold tracking-tight text-slate-900" id="front-word">
                   access
                 </h2>
-                <button onclick="speakWord(event)" id="speaker-btn" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition border border-blue-200 touch-target active:scale-90 flex-shrink-0 shadow-sm" title="ฟังเสียงอ่าน (กริยาจะอ่านต่อเนื่อง 3 ช่อง V.1, V.2, V.3)">
+                <button onclick="speakWord(event)" id="speaker-btn" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition border border-blue-200 touch-target active:scale-90 flex-shrink-0 shadow-sm" title="ฟังเสียงอ่าน">
                   <span class="text-base sm:text-lg">🔊</span>
                 </button>
               </div>
-
-              <!-- Dedicated 3 Verb Forms Container (Shows only for verbs) -->
-              <div id="front-verb-box" class="mt-2 inline-flex items-center justify-center gap-1 sm:gap-1.5 flex-wrap bg-blue-50/90 border border-blue-200 rounded-xl px-2.5 py-1 shadow-sm text-xs sm:text-sm hidden transition-all max-w-full">
-                <span id="badge-v1" class="inline-flex items-center gap-1 font-bold text-blue-900 cursor-pointer hover:bg-blue-100 px-2 py-0.5 rounded-lg transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v1')" title="คลิกเพื่อฟังเสียง V.1">
-                  <span class="text-[10px] bg-blue-200 text-blue-800 font-bold px-1.5 py-0.2 rounded font-mono">V.1</span> <b id="front-v1" class="text-xs sm:text-sm text-blue-950 font-bold">accept</b>
-                </span>
-                <span class="text-blue-300 font-bold text-xs">➔</span>
-                <span id="badge-v2" class="inline-flex items-center gap-1 font-bold text-blue-900 cursor-pointer hover:bg-blue-100 px-2 py-0.5 rounded-lg transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v2')" title="คลิกเพื่อฟังเสียง V.2">
-                  <span class="text-[10px] bg-blue-200 text-blue-800 font-bold px-1.5 py-0.2 rounded font-mono">V.2</span> <b id="front-v2" class="text-xs sm:text-sm text-blue-950 font-bold">accepted</b>
-                </span>
-                <span class="text-blue-300 font-bold text-xs">➔</span>
-                <span id="badge-v3" class="inline-flex items-center gap-1 font-bold text-blue-900 cursor-pointer hover:bg-blue-100 px-2 py-0.5 rounded-lg transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v3')" title="คลิกเพื่อฟังเสียง V.3">
-                  <span class="text-[10px] bg-blue-200 text-blue-800 font-bold px-1.5 py-0.2 rounded font-mono">V.3</span> <b id="front-v3" class="text-xs sm:text-sm text-blue-950 font-bold">accepted</b>
-                </span>
-              </div>
+              <div id="front-verb-box" class="hidden"></div>
 
               <p class="fluid-reading text-slate-700 font-semibold mt-1.5 flex items-center justify-center gap-1.5 flex-wrap" id="front-reading">
                 คำอ่าน: 'แอ็คเซิซ
@@ -422,23 +394,7 @@ try {
                 </button>
               </div>
 
-              <!-- Dedicated 3 Verb Forms Diagram on Back (Shows only for verbs) -->
-              <div id="back-verb-box" class="mt-2 inline-flex items-center justify-center gap-1 sm:gap-1.5 flex-wrap bg-emerald-50/90 border border-emerald-200 rounded-xl px-2.5 py-1 shadow-sm text-xs sm:text-sm hidden transition-all max-w-full">
-                <div id="badge-back-v1" class="text-center px-1.5 py-0.5 rounded-lg hover:bg-emerald-100/70 cursor-pointer transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v1')" title="ฟังเสียง V.1">
-                  <span class="text-[10px] font-bold text-emerald-700 uppercase block">V.1 รูปเดิม</span>
-                  <span class="font-bold text-emerald-950 text-xs sm:text-sm" id="back-v1">accept</span>
-                </div>
-                <span class="text-emerald-400 font-bold text-xs">➔</span>
-                <div id="badge-back-v2" class="text-center px-1.5 py-0.5 rounded-lg hover:bg-emerald-100/70 cursor-pointer transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v2')" title="ฟังเสียง V.2">
-                  <span class="text-[10px] font-bold text-emerald-700 uppercase block">V.2 อดีต</span>
-                  <span class="font-bold text-emerald-950 text-xs sm:text-sm" id="back-v2">accepted</span>
-                </div>
-                <span class="text-emerald-400 font-bold text-xs">➔</span>
-                <div id="badge-back-v3" class="text-center px-1.5 py-0.5 rounded-lg hover:bg-emerald-100/70 cursor-pointer transition duration-200 touch-manipulate" onclick="speakSingleWord(event, 'v3')" title="ฟังเสียง V.3">
-                  <span class="text-[10px] font-bold text-emerald-700 uppercase block">V.3 Participle</span>
-                  <span class="font-bold text-emerald-950 text-xs sm:text-sm" id="back-v3">accepted</span>
-                </div>
-              </div>
+              <div id="back-verb-box" class="hidden"></div>
 
               <div id="back-reading" class="fluid-reading text-slate-700 font-semibold mt-1.5 flex items-center justify-center gap-1.5 flex-wrap">('แอ็คเซิซ)</div>
               <div class="mt-2.5 inline-block">
@@ -726,44 +682,11 @@ try {
       "คำกำกับนาม (Determiner)"
     ];
 
-    const verb3FormsMap = {"101": ["accept", "accepted", "accepted"], "102": ["achieve", "achieved", "achieved"], "103": ["acknowledge", "acknowledged", "acknowledged"], "104": ["acquire", "acquired", "acquired"], "105": ["act", "acted", "acted"], "106": ["adjust", "adjusted", "adjusted"], "107": ["administer", "administered", "administered"], "108": ["advertise", "advertised", "advertised"], "109": ["advise", "advised", "advised"], "110": ["allocate", "allocated", "allocated"], "111": ["analyze", "analyzed", "analyzed"], "112": ["answer", "answered", "answered"], "113": ["apply", "applied", "applied"], "114": ["appoint", "appointed", "appointed"], "115": ["approve", "approved", "approved"], "116": ["arrange", "arranged", "arranged"], "117": ["assist", "assisted", "assisted"], "118": ["assume", "assumed", "assumed"], "119": ["attend", "attended", "attended"], "120": ["authorize", "authorized", "authorized"], "121": ["avoid", "avoided", "avoided"], "122": ["balance", "balanced", "balanced"], "123": ["behave", "behaved", "behaved"], "124": ["believe", "believed", "believed"], "125": ["build", "built", "built"], "126": ["calculate", "calculated", "calculated"], "127": ["cancel", "canceled", "canceled"], "128": ["clarify", "clarified", "clarified"], "129": ["collaborate", "collaborated", "collaborated"], "130": ["collect", "collected", "collected"], "131": ["communicate", "communicated", "communicated"], "132": ["compare", "compared", "compared"], "133": ["complete", "completed", "completed"], "134": ["confirm", "confirmed", "confirmed"], "135": ["connect", "connected", "connected"], "136": ["consider", "considered", "considered"], "137": ["construct", "constructed", "constructed"], "138": ["contact", "contacted", "contacted"], "139": ["contribute", "contributed", "contributed"], "140": ["control", "controlled", "controlled"], "141": ["cooperate", "cooperated", "cooperated"], "142": ["correct", "corrected", "corrected"], "143": ["create", "created", "created"], "144": ["decide", "decided", "decided"], "145": ["decline", "declined", "declined"], "146": ["deliver", "delivered", "delivered"], "147": ["demonstrate", "demonstrated", "demonstrated"], "148": ["depend", "depended", "depended"], "149": ["describe", "described", "described"], "150": ["design", "designed", "designed"], "151": ["develop", "developed", "developed"], "152": ["discuss", "discussed", "discussed"], "153": ["distribute", "distributed", "distributed"], "154": ["edit", "edited", "edited"], "155": ["emphasize", "emphasized", "emphasized"], "156": ["enable", "enabled", "enabled"], "157": ["encourage", "encouraged", "encouraged"], "158": ["engage", "engaged", "engaged"], "159": ["ensure", "ensured", "ensured"], "160": ["enter", "entered", "entered"], "161": ["establish", "established", "established"], "162": ["estimate", "estimated", "estimated"], "163": ["evaluate", "evaluated", "evaluated"], "164": ["exceed", "exceeded", "exceeded"], "165": ["exclude", "excluded", "excluded"], "166": ["excuse", "excused", "excused"], "167": ["expand", "expanded", "expanded"], "168": ["expect", "expected", "expected"], "169": ["explain", "explained", "explained"], "170": ["express", "expressed", "expressed"], "171": ["file", "filed", "filed"], "172": ["fill", "filled", "filled"], "173": ["focus", "focused", "focused"], "174": ["follow", "followed", "followed"], "175": ["form", "formed", "formed"], "176": ["gain", "gained", "gained"], "177": ["gather", "gathered", "gathered"], "178": ["generate", "generated", "generated"], "179": ["handle", "handled", "handled"], "180": ["identify", "identified", "identified"], "181": ["implement", "implemented", "implemented"], "182": ["improve", "improved", "improved"], "183": ["include", "included", "included"], "184": ["inform", "informed", "informed"], "185": ["install", "installed", "installed"], "186": ["instruct", "instructed", "instructed"], "187": ["intend", "intended", "intended"], "188": ["interview", "interviewed", "interviewed"], "189": ["introduce", "introduced", "introduced"], "190": ["investigate", "investigated", "investigated"], "191": ["invite", "invited", "invited"], "192": ["join", "joined", "joined"], "193": ["justify", "justified", "justified"], "194": ["lead", "led", "led"], "195": ["limit", "limited", "limited"], "196": ["manage", "managed", "managed"], "197": ["measure", "measured", "measured"], "198": ["monitor", "monitored", "monitored"], "199": ["notify", "notified", "notified"], "200": ["observe", "observed", "observed"]};
-
     function getCardVerbForms(c) {
       if (!c) return { v1: "", v2: "", v3: "", hasForms: false };
-      
-      let v1 = (c.v1 || "").trim();
-      let v2 = (c.v2 || "").trim();
-      let v3 = (c.v3 || "").trim();
-
-      if (v1 && v2 && v3) {
-        return { v1: v1, v2: v2, v3: v3, hasForms: true };
-      }
-
-      if (c.word && (c.word.includes("–") || c.word.includes("-"))) {
-        const parts = c.word.split(/[–\-]/).map(function(s) { return s.trim(); }).filter(Boolean);
-        if (parts.length >= 3) {
-          return { v1: parts[0], v2: parts[1], v3: parts[2], hasForms: true };
-        }
-      }
-
-      const numKey = String(c.num || "");
-      if (numKey && verb3FormsMap[numKey]) {
-        const mv = verb3FormsMap[numKey];
-        return { v1: mv[0], v2: mv[1], v3: mv[2], hasForms: true };
-      }
-
-      if (c.category === "คำกริยา (Verb)" || (c.pos && c.pos.toLowerCase().includes("v"))) {
-        const cleanWord = (c.word || "").replace(/[^a-zA-Z]/g, '').toLowerCase();
-        for (const k in verb3FormsMap) {
-          if (verb3FormsMap[k][0].toLowerCase() === cleanWord) {
-            const mv = verb3FormsMap[k];
-            return { v1: mv[0], v2: mv[1], v3: mv[2], hasForms: true };
-          }
-        }
-      }
-
-      return { v1: "", v2: "", v3: "", hasForms: false };
+      return { v1: c.v1 || "", v2: c.v2 || "", v3: c.v3 || "", hasForms: false };
     }
+
 
     function init() {
       renderCategoryPills();
@@ -923,11 +846,7 @@ try {
 
       if (searchQuery) {
         list = list.filter(function(c) {
-          const vf = getCardVerbForms(c);
           return (c.word && c.word.toLowerCase().includes(searchQuery)) ||
-                 (vf.v1 && vf.v1.toLowerCase().includes(searchQuery)) ||
-                 (vf.v2 && vf.v2.toLowerCase().includes(searchQuery)) ||
-                 (vf.v3 && vf.v3.toLowerCase().includes(searchQuery)) ||
                  (c.meaning && c.meaning.toLowerCase().includes(searchQuery)) ||
                  (c.reading && c.reading.toLowerCase().includes(searchQuery)) ||
                  (c.example && c.example.toLowerCase().includes(searchQuery)) ||
@@ -956,8 +875,6 @@ try {
         document.getElementById("front-cloze").innerHTML = "—";
         document.getElementById("front-index").innerText = "0 / 0";
         document.getElementById("front-icon").innerText = "🔍";
-        document.getElementById("front-verb-box").classList.add("hidden");
-        document.getElementById("back-verb-box").classList.add("hidden");
         return;
       }
 
@@ -966,40 +883,16 @@ try {
 
       const c = cards[currentIndex];
       const st = mastery[c.num] || "unseen";
-      const vForms = getCardVerbForms(c);
-      const isVerbWithThreeForms = vForms.hasForms;
-      const v1 = vForms.v1;
-      const v2 = vForms.v2;
-      const v3 = vForms.v3;
 
       // Front elements
       document.getElementById("front-cat-badge").innerText = c.category;
       document.getElementById("front-index").innerText = "#" + c.num + " / " + rawCards.length + " (" + (currentIndex + 1) + "/" + cards.length + ")";
       document.getElementById("front-icon").innerText = c.icon || "📖";
       
-      // Front Word & Verb 3 Forms
+      // Front Word
       const frontWordEl = document.getElementById("front-word");
-      const frontVerbBox = document.getElementById("front-verb-box");
-      const backVerbBox = document.getElementById("back-verb-box");
-
-      if (isVerbWithThreeForms) {
-        frontWordEl.className = "fluid-word-verb font-bold tracking-tight text-slate-900 inline-block";
-        frontWordEl.innerHTML = `<span class="text-blue-700 font-extrabold">${v1}</span> <span class="text-slate-300 font-normal mx-0.5">–</span> <span class="text-slate-800 font-bold">${v2}</span> <span class="text-slate-300 font-normal mx-0.5">–</span> <span class="text-slate-800 font-bold">${v3}</span>`;
-        frontVerbBox.classList.remove("hidden");
-        document.getElementById("front-v1").innerText = v1;
-        document.getElementById("front-v2").innerText = v2;
-        document.getElementById("front-v3").innerText = v3;
-
-        backVerbBox.classList.remove("hidden");
-        document.getElementById("back-v1").innerText = v1;
-        document.getElementById("back-v2").innerText = v2;
-        document.getElementById("back-v3").innerText = v3;
-      } else {
-        frontWordEl.className = "fluid-word font-extrabold tracking-tight text-slate-900 inline-block";
-        frontWordEl.innerText = c.word;
-        frontVerbBox.classList.add("hidden");
-        backVerbBox.classList.add("hidden");
-      }
+      frontWordEl.className = "fluid-word font-extrabold tracking-tight text-slate-900 inline-block";
+      frontWordEl.innerText = c.word;
 
       const posBadge = c.pos ? `<span class="px-2 py-0.5 rounded-lg bg-blue-100 text-blue-800 font-mono text-xs font-bold border border-blue-200 mr-1.5 shadow-sm">${c.pos}</span>` : "";
       document.getElementById("front-reading").innerHTML = posBadge + `<span class="text-slate-500 font-medium">คำอ่าน:</span> <span class="text-slate-900 font-bold tracking-wide">${c.reading || "—"}</span>`;
@@ -1036,18 +929,13 @@ try {
       document.getElementById("back-index").innerText = "#" + c.num + " / " + rawCards.length;
       
       const backWordEl = document.getElementById("back-word");
-      if (isVerbWithThreeForms) {
-        backWordEl.className = "fluid-word-verb font-bold tracking-tight text-slate-900 inline-block";
-        backWordEl.innerHTML = `<span class="text-emerald-700 font-extrabold">${v1}</span> <span class="text-slate-300 font-normal mx-0.5">–</span> <span class="text-slate-800 font-bold">${v2}</span> <span class="text-slate-300 font-normal mx-0.5">–</span> <span class="text-slate-800 font-bold">${v3}</span>`;
-      } else {
-        backWordEl.className = "fluid-word font-bold text-slate-900 inline-block";
-        backWordEl.innerText = c.word;
-      }
+      backWordEl.className = "fluid-word font-bold text-slate-900 inline-block";
+      backWordEl.innerText = c.word;
 
       const backPosBadge = c.pos ? `<span class="px-2 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 font-mono text-xs font-bold border border-emerald-200 mr-1.5 shadow-sm">${c.pos}</span>` : "";
       document.getElementById("back-reading").innerHTML = backPosBadge + `<span class="text-slate-500 font-medium">คำอ่าน:</span> <span class="text-slate-900 font-bold tracking-wide">(${c.reading || "—"})</span>`;
       document.getElementById("back-meaning").innerText = c.meaning;
-      document.getElementById("back-example").innerHTML = "<b>ประโยคเต็ม:</b> " + highlightWord(c.example, c.word, v1);
+      document.getElementById("back-example").innerHTML = "<b>ประโยคเต็ม:</b> " + highlightWord(c.example, c.word);
       document.getElementById("back-example-th").innerHTML = "<b>แปล:</b> " + (c.example_th || "—");
 
       // Synonyms & Antonyms
@@ -1281,7 +1169,7 @@ try {
       });
     }
 
-    // Audio Engine: Supports reading 3 verb forms in sequence or single word
+    // Audio Engine: Native Dictionary Studio Audio & Speech Synthesis
     function speakWord(event) {
       if (event) {
         event.stopPropagation();
@@ -1300,91 +1188,11 @@ try {
         }
       });
 
-      // If card has 3 verb forms (v1, v2, v3), read all 3 forms in sequence
-      const vForms = getCardVerbForms(c);
-      if (vForms.hasForms) {
-        playThreeAudioWords(vForms.v1, vForms.v2, vForms.v3);
-        return;
-      }
-
-      // Normal single word
       let wordToSpeak = (c.word || "").replace(/xx/, '').replace(/[…\.]/g, '').trim();
       if (wordToSpeak.includes("–") || wordToSpeak.includes("-")) {
         wordToSpeak = wordToSpeak.split(/[–\-]/)[0].trim();
       }
       playSingleAudio(wordToSpeak);
-    }
-
-    // Play 3 verb forms sequentially using studio native dictionary audio
-    function playThreeAudioWords(w1, w2, w3) {
-      if (audioSequenceTimer) {
-        clearTimeout(audioSequenceTimer);
-        audioSequenceTimer = null;
-      }
-      if (currentAudio) {
-        try {
-          currentAudio.pause();
-          currentAudio.currentTime = 0;
-        } catch(e) {}
-      }
-
-      const words = [w1, w2, w3].map(function(w) {
-        return (w || "").replace(/[^a-zA-Z\s]/g, '').trim();
-      }).filter(Boolean);
-
-      if (words.length === 0) return;
-
-      let idx = 0;
-
-      function playNext() {
-        if (idx >= words.length) {
-          clearVerbBadgeHighlights();
-          return;
-        }
-
-        const currentWord = words[idx];
-        const currentFormNum = idx + 1;
-        highlightActiveVerbBadge(currentFormNum);
-
-        const audioUrl = "https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(currentWord) + "&type=2";
-
-        try {
-          const audio = new Audio(audioUrl);
-          currentAudio = audio;
-
-          audio.onended = function() {
-            clearVerbBadgeHighlights();
-            idx++;
-            if (idx < words.length) {
-              audioSequenceTimer = setTimeout(playNext, 340);
-            }
-          };
-
-          audio.onerror = function() {
-            clearVerbBadgeHighlights();
-            idx++;
-            if (idx < words.length) {
-              audioSequenceTimer = setTimeout(playNext, 250);
-            } else {
-              speakSequentialWebSpeech(words);
-            }
-          };
-
-          const p = audio.play();
-          if (p !== undefined) {
-            p.catch(function(err) {
-              console.warn("Audio sequence play error:", err);
-              clearVerbBadgeHighlights();
-              speakSequentialWebSpeech(words);
-            });
-          }
-        } catch(e) {
-          clearVerbBadgeHighlights();
-          speakSequentialWebSpeech(words);
-        }
-      }
-
-      playNext();
     }
 
     // Pronounce a single specific form when tapped
